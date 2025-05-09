@@ -14,6 +14,7 @@ public final class BaseFeeRegistry {
         fees.put("PerKey", 0.01);
         fees.put("PerHCSByte", 0.00001);
         fees.put("PerFileByte", 0.0001);
+        fees.put("PerCryptoTransferAccount", 0.00001);
 
         // Crypto service
         fees.put("CryptoCreate", 0.05000);

@@ -8,13 +8,14 @@ import java.util.Map;
 public class CryptoTransfer extends AbstractFeeModel {
 
     private final List<ParameterDefinition> params = List.of(
+            new ParameterDefinition("numAccountsInvolved", "number", 2, 0, 20, "Number of Accounts involved in this transaction"),
             new ParameterDefinition("numHbarEntries", "number", 2, 0, 10, "Number of Hbar entries"),
             new ParameterDefinition("numFTNoCustomFeeEntries", "number", 0, 0, 10, "Fungible token entries without custom fee"),
             new ParameterDefinition("numNFTNoCustomFeeEntries", "number", 0, 0, 10, "Non-Fungible token entries without custom fee"),
             new ParameterDefinition("numFTWithCustomFeeEntries", "number", 0, 0, 10, "Fungible token entries with custom fee"),
             new ParameterDefinition("numNFTWithCustomFeeEntries", "number", 0, 0, 10, "Non-Fungible token entries with custom fee"),
             new ParameterDefinition("numAutoAssociationsCreated", "number", 0, 0, 10, "Auto-created token associations"),
-            new ParameterDefinition("numAutoAccountsCreated", "number", 0, 0, 10, "Auto-created accounts")
+            new ParameterDefinition("numAutoAccountsCreated", "number", 0, 0, 20, "Auto-created accounts")
     );
 
     @Override
@@ -32,10 +33,11 @@ public class CryptoTransfer extends AbstractFeeModel {
         FeeCheckResult base = super.checkParameters(values);
         if (!base.result) return base;
 
-        if ((int) values.get("numHbarEntries") < 2 &&
+        if ( (int) values.get("numAccountsInvolved") < 2 ||
+                ((int) values.get("numHbarEntries") < 2 &&
                 (int) values.get("numFTNoCustomFeeEntries") < 2 &&
                 (int) values.get("numNFTNoCustomFeeEntries") < 2 &&
-                (int) values.get("numNFTWithCustomFeeEntries") < 2) {
+                (int) values.get("numNFTWithCustomFeeEntries") < 2)) {
             return FeeCheckResult.failure("There must be at least 2 entries of hbar or token transfers.");
         }
 
@@ -45,6 +47,9 @@ public class CryptoTransfer extends AbstractFeeModel {
     @Override
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
+
+        if (values.get("numAccountsInvolved") instanceof Integer num && num > 2)
+            fee.addDetail("Accounts involved", num, (num - 2) * BaseFeeRegistry.getBaseFee("PerCryptoTransferAccount"));
 
         if (values.get("numHbarEntries") instanceof Integer num && num > 0)
             fee.addDetail("HBAR transfers", num, BaseFeeRegistry.getBaseFee("CryptoTransfer"));
