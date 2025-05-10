@@ -20,11 +20,11 @@ export default function FeeEstimator() {
     if (!selectedApi) return;
     axios.get(`${backendUrlPrefix}/${selectedApi}/parameters`)
       .then(res => {
-        setParameters(res.data);
         const defaults = {};
         for (const param of res.data) {
           defaults[param.name] = param.defaultValue;
         }
+        setParameters(res.data);
         setValues(defaults);
         setFeeResult(null);
       })
@@ -37,7 +37,7 @@ export default function FeeEstimator() {
       axios.post(`${backendUrlPrefix}/${selectedApi}/fee`, values)
         .then(res => setFeeResult(res.data))
         .catch(err => console.error("Fee computation failed:", err));
-    }, 300); // Debounce
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [values, selectedApi]);
@@ -48,13 +48,13 @@ export default function FeeEstimator() {
 
   return (
     <div className="min-h-screen bg-[#1c1c1c] text-white font-sans p-6">
-      <div className="grid grid-cols-3 gap-8">
+        <div className="grid grid-cols-[20%_20%_1fr] gap-8">
+
 
         {/* STEP 1 */}
         <div>
           <h2 className="text-sm text-[#8c8c8c] uppercase tracking-widest mb-1 border-b border-indigo-500 pb-1">Step 1</h2>
           <p className="text-lg font-semibold mb-4">Select a <span className="text-white font-bold">Hedera service</span></p>
-          {/* Icons & service list could go here in the future */}
         </div>
 
         {/* STEP 2 */}
@@ -80,30 +80,32 @@ export default function FeeEstimator() {
           {selectedApi && (
             <>
               <p className="text-lg font-semibold mb-4">Enter the <span className="text-white font-bold">API call parameters</span> <span className="text-[#aaa]">({selectedApi})</span></p>
-              <div className="flex flex-col gap-4">
-                {parameters.map(param => (
-                  <div key={param.name}>
-                    <label className="text-sm text-[#ccc] block mb-1">{param.prompt}</label>
-                    {param.type === "boolean" ? (
-                      <input
-                        type="checkbox"
-                        checked={values[param.name] || false}
-                        onChange={(e) => updateValue(param.name, e.target.checked)}
-                        className="w-4 h-4"
-                      />
-                    ) : (
-                      <input
-                        type="number"
-                        className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2 w-full"
-                        value={values[param.name] ?? ""}
-                        min={param.min}
-                        max={param.max}
-                        onChange={(e) => updateValue(param.name, parseInt(e.target.value, 10))}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+              <table className="w-full table-fixed text-sm">
+                <tbody>
+                  {parameters.reduce((rows, param, index) => {
+                    if (index % 2 === 0) rows.push([param]);
+                    else rows[rows.length - 1].push(param);
+                    return rows;
+                  }, []).map((row, rowIndex) => (
+                    <tr key={rowIndex} className="align-top">
+                      {row.map(param => (
+                        <td key={param.name} className="p-2 w-1/2" style={{verticalAlign: "bottom"}}>
+                          <label className="block text-[#ccc] mb-1">{param.prompt}</label>
+                          <input
+                            type={param.type === 'boolean' ? 'checkbox' : 'text'}
+                            value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
+                            checked={param.type === 'boolean' ? values[param.name] || false : undefined}
+                            onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : parseInt(e.target.value, 10))}
+                            className="w-full bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
+                            style={{borderRadius: "30px"}}
+                          />
+                        </td>
+                      ))}
+                      {row.length < 2 && <td className="w-1/2"></td>}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </>
           )}
         </div>

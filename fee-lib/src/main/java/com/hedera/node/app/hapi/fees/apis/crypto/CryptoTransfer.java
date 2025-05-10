@@ -8,7 +8,7 @@ import java.util.Map;
 public class CryptoTransfer extends AbstractFeeModel {
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numAccountsInvolved", "number", 2, 0, 20, "Number of Accounts involved in this transaction"),
+            new ParameterDefinition("numAccountsInvolved", "number", 2, 0, 20, "Number of Accounts involved"),
             new ParameterDefinition("numHbarEntries", "number", 2, 0, 10, "Number of Hbar entries"),
             new ParameterDefinition("numFTNoCustomFeeEntries", "number", 0, 0, 10, "Fungible token entries without custom fee"),
             new ParameterDefinition("numNFTNoCustomFeeEntries", "number", 0, 0, 10, "Non-Fungible token entries without custom fee"),
