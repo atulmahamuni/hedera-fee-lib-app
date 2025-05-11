@@ -8,14 +8,14 @@ import java.util.Map;
 public class CryptoTransfer extends AbstractFeeModel {
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numAccountsInvolved", "number", 2, 0, 20, "Number of Accounts involved"),
-            new ParameterDefinition("numHbarEntries", "number", 2, 0, 10, "Number of Hbar entries"),
-            new ParameterDefinition("numFTNoCustomFeeEntries", "number", 0, 0, 10, "Fungible token entries without custom fee"),
-            new ParameterDefinition("numNFTNoCustomFeeEntries", "number", 0, 0, 10, "Non-Fungible token entries without custom fee"),
-            new ParameterDefinition("numFTWithCustomFeeEntries", "number", 0, 0, 10, "Fungible token entries with custom fee"),
-            new ParameterDefinition("numNFTWithCustomFeeEntries", "number", 0, 0, 10, "Non-Fungible token entries with custom fee"),
-            new ParameterDefinition("numAutoAssociationsCreated", "number", 0, 0, 10, "Auto-created token associations"),
-            new ParameterDefinition("numAutoAccountsCreated", "number", 0, 0, 20, "Auto-created accounts")
+            new ParameterDefinition("numAccountsInvolved", "number", null, 2, 0, 20, "Number of Accounts involved"),
+            new ParameterDefinition("numHbarEntries", "number", null, 2, 0, 10, "Number of Hbar entries"),
+            new ParameterDefinition("numFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries without custom fee"),
+            new ParameterDefinition("numNFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Non-Fungible token entries without custom fee"),
+            new ParameterDefinition("numFTWithCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries with custom fee"),
+            new ParameterDefinition("numNFTWithCustomFeeEntries", "number", null, 0, 0, 10, "Non-Fungible token entries with custom fee"),
+            new ParameterDefinition("numAutoAssociationsCreated", "number", null, 0, 0, 10, "Auto-created token associations"),
+            new ParameterDefinition("numAutoAccountsCreated", "number", null, 0, 0, 20, "Auto-created accounts")
     );
 
     @Override

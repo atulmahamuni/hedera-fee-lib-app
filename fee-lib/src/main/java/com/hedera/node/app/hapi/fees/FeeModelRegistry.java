@@ -7,6 +7,8 @@ import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
 import com.hedera.node.app.hapi.fees.apis.token.TokenCreate;
+import com.hedera.node.app.hapi.fees.apis.token.TokenMint;
+import com.hedera.node.app.hapi.fees.apis.token.TokenUpdate;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -38,10 +40,10 @@ public class FeeModelRegistry {
 
         // Token
         registry.put("TokenCreate", new TokenCreate());
-        registry.put("TokenUpdate", new NoParametersAPI("Token", "TokenUpdate", "Update an existing token"));
+        registry.put("TokenUpdate", new TokenUpdate());
         registry.put("TokenTransfer", new CryptoTransfer());
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
-        registry.put("TokenMint", new NoParametersAPI("Token", "TokenMint", "Mint new token(s)"));
+        registry.put("TokenMint", new TokenMint());
         registry.put("TokenBurn", new NoParametersAPI("Token", "TokenBurn", "Burn existing token(s)"));
         registry.put("TokenPause", new NoParametersAPI("Token", "TokenPause", "Pauses a token"));
         registry.put("TokenUnpause", new NoParametersAPI("Token", "TokenUnpause", "Unpauses a token"));

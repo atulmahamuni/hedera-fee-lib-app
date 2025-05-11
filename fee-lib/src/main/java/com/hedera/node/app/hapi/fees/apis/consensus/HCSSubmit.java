@@ -4,7 +4,11 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +16,8 @@ public class HCSSubmit extends AbstractFeeModel {
     final int NUM_FREE_HCS_BYTES = 128;
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("hasCustomFee", "boolean", false, 0, 0, "Does this topic have custom fee"),
-            new ParameterDefinition("numBytes", "number", 128, 1, 1024, "Size of the message (bytes)")
+            new ParameterDefinition("hasCustomFee", "list", new String[] { "Yes", "No" }, "No", 0, 0, "Does this topic have custom fee"),
+            new ParameterDefinition("numBytes", "number", null, 128, 1, 1024, "Size of the message (bytes)")
     );
 
     @Override
@@ -35,8 +39,8 @@ public class HCSSubmit extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        boolean hasCustomFee = (boolean) values.get("hasCustomFee");
-        if (hasCustomFee == false) {
+        YesOrNo hasCustomFee = (YesOrNo) values.get("hasCustomFee");
+        if (hasCustomFee == YesOrNo.NO) {
             fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessage"));
         } else {
             fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessageWithCustomFee"));

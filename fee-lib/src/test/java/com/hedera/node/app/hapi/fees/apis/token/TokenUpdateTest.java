@@ -1,6 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.token;
 
 import com.hedera.node.app.hapi.fees.FeeResult;
+import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -28,6 +29,7 @@ class TokenUpdateTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 6);
         params.put("numKeys", 7);
+
         FeeResult fee = topic.computeFee(params);
         assertEquals(0.0015, fee.fee, "Token update with multiple signatures");
     }
@@ -38,7 +40,7 @@ class TokenUpdateTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 10);
-        params.put("hasCustomFee", false);
+
         FeeResult fee = topic.computeFee(params);
         assertEquals(0.031, fee.fee, "Token update with multiple keys");
     }

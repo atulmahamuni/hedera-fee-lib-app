@@ -1,6 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.consensus;
 
 import com.hedera.node.app.hapi.fees.FeeResult;
+import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class HCSSubmitTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
 
-        params.put("hasCustomFee", false);
+        params.put("hasCustomFee", YesOrNo.NO);
 
         for (int numBytes = 10; numBytes < 1000; numBytes += 10) {
             params.put("numBytes", numBytes);
@@ -37,7 +38,7 @@ class HCSSubmitTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
 
-        params.put("hasCustomFee", true);
+        params.put("hasCustomFee", YesOrNo.YES);
 
         for (int numBytes = 10; numBytes < 1000; numBytes += 10) {
             params.put("numBytes", numBytes);

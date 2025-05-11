@@ -1,10 +1,13 @@
 package com.hedera.node.app.hapi.fees;
 
+import com.hedera.node.app.hapi.fees.apis.FTOrNFT;
+import com.hedera.node.app.hapi.fees.apis.YesOrNo;
+
 import java.util.*;
 
 public abstract class AbstractFeeModel {
     protected static final List<ParameterDefinition> COMMON_PARAMS = List.of(
-            new ParameterDefinition("numSignatures", "number", 1, 1, Integer.MAX_VALUE, "Number of signatures")
+            new ParameterDefinition("numSignatures", "number", null,1, 1, Integer.MAX_VALUE, "Number of signatures")
     );
 
     // Returns the description of the API
@@ -45,17 +48,40 @@ public abstract class AbstractFeeModel {
 
     // Compute the fee. There are 2 parts to the fee. There's the API specific fee (e.g. cryptoCreate price is based on the number of keys), and there's fee for parameters that are common across all APIs (e.g. number of signatures)
     public FeeResult computeFee(Map<String, Object> values) {
+        preprocessEnumValues(values);
+
         FeeResult result = computeApiSpecificFee(values);
 
         // Compute the fee for parameters that are common across all APIs
         if (values.containsKey("numSignatures")) {
             int numSignatures = (int) values.get("numSignatures");
-            double fee = (numSignatures - 1) * BaseFeeRegistry.getBaseFee("PerSignature");
-            result.addDetail("Signature verification fee", numSignatures, fee);
+            int additionalSignatures = Math.max(numSignatures - 1, 0);
+            double fee = additionalSignatures * BaseFeeRegistry.getBaseFee("PerSignature");
+            result.addDetail("Additional signature verifications", additionalSignatures, fee);
         }
         return result;
     }
 
     // Compute API specific fee (e.g. cryptoCreate price is based on the number of keys)
     protected abstract FeeResult computeApiSpecificFee(Map<String, Object> values);
+
+    @SuppressWarnings("unchecked")
+    private void preprocessEnumValues(Map<String, Object> values) {
+        for (Map.Entry<String, Object> entry : values.entrySet()) {
+            Object val = entry.getValue();
+
+            if (val instanceof String strVal) {
+                try {
+                    if (strVal.equalsIgnoreCase("YES") || strVal.equalsIgnoreCase("NO")) {
+                        entry.setValue(YesOrNo.valueOf(strVal.toUpperCase()));
+                    } else if (strVal.equalsIgnoreCase("Fungible") || strVal.equalsIgnoreCase("NonFungible")) {
+                        entry.setValue(FTOrNFT.valueOf(strVal));
+                    }
+                } catch (IllegalArgumentException e) {
+                    // Ignore or log invalid enums if desired
+                }
+            }
+        }
+    }
 }
+

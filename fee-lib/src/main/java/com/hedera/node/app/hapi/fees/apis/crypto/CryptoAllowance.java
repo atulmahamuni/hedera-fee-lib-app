@@ -13,7 +13,7 @@ public class CryptoAllowance extends AbstractFeeModel {
     String description;
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numAllowances", "number", 1, 1, Integer.MAX_VALUE, "Number of Allowances")
+            new ParameterDefinition("numAllowances", "number", null, 1, 1, Integer.MAX_VALUE, "Number of Allowances")
     );
 
     public CryptoAllowance(String api, String description) {

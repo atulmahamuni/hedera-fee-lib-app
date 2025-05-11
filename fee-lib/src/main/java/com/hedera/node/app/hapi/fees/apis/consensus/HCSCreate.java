@@ -4,6 +4,7 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
 public class HCSCreate extends AbstractFeeModel {
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("hasCustomFee", "boolean", false, 0, 0, "Does this topic have custom fee")
+            new ParameterDefinition("hasCustomFee", "list", new Object[] { YesOrNo.YES, YesOrNo.NO }, YesOrNo.NO, 0, 0, "Does this topic have custom fee")
     );
 
     @Override
@@ -33,8 +34,8 @@ public class HCSCreate extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        boolean hasCustomFee = (boolean) values.get("hasCustomFee");
-        if (hasCustomFee == false) {
+        YesOrNo hasCustomFee = (YesOrNo) values.get("hasCustomFee");
+        if (hasCustomFee == YesOrNo.NO) {
             fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusCreateTopic"));
         } else {
             fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusCreateTopicWithCustomFee"));

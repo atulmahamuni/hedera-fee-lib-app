@@ -17,7 +17,7 @@ export default function FeeEstimator() {
     Token: "https://files.hedera.com/Nav-Icon-Token-Service-std.svg?dm=1709012106",
     "Smart Contracts": "https://files.hedera.com/Nav-Icon-Smart-Contracts-std.svg?dm=1709012090",
     File: "https://files.hedera.com/Nav-Icon-Grant-Funding-std.svg?dm=1709012009",
-    Miscellaneouse: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983",
+    Miscellaneous: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983"
   };
 
   useEffect(() => {
@@ -116,14 +116,27 @@ export default function FeeEstimator() {
                         <td key={param.name} className="p-2 w-1/2">
                           <div className="flex flex-col">
                             <label className="block text-[#ccc] mb-1">{param.prompt}</label>
-                            <input
-                              type={param.type === 'boolean' ? 'checkbox' : 'text'}
-                              value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
-                              checked={param.type === 'boolean' ? values[param.name] || false : undefined}
-                              onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : parseInt(e.target.value, 10))}
-                              className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
-                              style={{ borderRadius: "30px" }}
-                            />
+                            {param.type === 'list' ? (
+                              <select
+                                value={values[param.name] ?? param.defaultValue}
+                                onChange={(e) => updateValue(param.name, e.target.value)}
+                                className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
+                                style={{ borderRadius: "30px" }}
+                              >
+                                {param.values.map(opt => (
+                                  <option key={opt} value={opt}>{opt}</option>
+                                ))}
+                              </select>
+                            ) : (
+                              <input
+                                type={param.type === 'boolean' ? 'checkbox' : 'text'}
+                                value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
+                                checked={param.type === 'boolean' ? values[param.name] || false : undefined}
+                                onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : parseInt(e.target.value, 10))}
+                                className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
+                                style={{ borderRadius: "30px" }}
+                              />
+                            )}
                           </div>
                         </td>
                       ))}
@@ -146,23 +159,21 @@ export default function FeeEstimator() {
           </div>
           {feeResult.details && (
             <div className="mt-3">
-              <div className="text-sm font-semibold text-gray-300 mb-2 text-center">Breakdown of fees</div>
+              <div className="text-sm font-semibold text-gray-300 mb-1 text-center">Breakdown of fees</div>
               <div className="bg-[#2c2c2c] rounded-md p-3 mx-auto text-sm text-gray-300 max-w-6xl overflow-x-auto">
-                <table className="w-full text-xs">
+                <table className="w-full text-xs table-fixed">
                   <tbody>
                     {Object.entries(feeResult.details).reduce((rows, [label, detail], index) => {
                       const rowIndex = Math.floor(index / 3);
                       if (!rows[rowIndex]) rows[rowIndex] = [];
                       rows[rowIndex].push(
-                        <td key={label} className="px-3 py-1 text-center w-1/3">
-                          <div className="border border-gray-600 rounded p-2">
-                            {label} (x{detail.value}): {detail.fee.toFixed(5)} USD
-                          </div>
+                        <td key={label} className="px-2 py-1 border border-gray-700 text-center w-1/3">
+                          {label} (x{detail.value}): {detail.fee.toFixed(5)} USD
                         </td>
                       );
                       return rows;
                     }, []).map((row, i) => (
-                      <tr key={i} className="w-full">
+                      <tr key={i}>
                         {row}
                       </tr>
                     ))}

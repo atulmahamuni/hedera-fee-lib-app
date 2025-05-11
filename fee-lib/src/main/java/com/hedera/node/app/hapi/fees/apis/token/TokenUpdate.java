@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class TokenUpdate extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numKeys", "number", 1, 1, 50, "Number of keys")
+            new ParameterDefinition("numKeys", "number", null,1, 1, 50, "Number of keys")
     );
 
     @Override
