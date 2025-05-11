@@ -17,6 +17,11 @@ public class HCSSubmit extends AbstractFeeModel {
     );
 
     @Override
+    public String getService() {
+        return "Consensus";
+    }
+
+    @Override
     public String getDescription() {
         return "Submit a message to an existing topic";
     }

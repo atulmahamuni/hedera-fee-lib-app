@@ -9,10 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 public class CryptoCreate extends AbstractFeeModel {
+    private String service = "Crypto";
 
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numKeys", "number", 1, 1, 50, "Number of keys")
     );
+
+    @Override
+    public String getService() {
+        return "Crypto";
+    }
 
     @Override
     public String getDescription() {

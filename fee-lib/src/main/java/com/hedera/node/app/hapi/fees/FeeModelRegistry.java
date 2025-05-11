@@ -18,22 +18,22 @@ public class FeeModelRegistry {
         // Crypto
         registry.put("CryptoCreate", new CryptoCreate());
         registry.put("CryptoTransfer", new CryptoTransfer());
-        registry.put("CryptoUpdate", new NoParametersAPI("CryptoUpdate", "Updates an existing account"));
-        registry.put("CryptoDelete", new NoParametersAPI("CryptoDelete", "Deletes an existing account"));
-        registry.put("CryptoGetAccountRecords", new NoParametersAPI("CryptoGetAccountRecords", "Retrieves records for an account"));
-        registry.put("CryptoGetAccountBalance", new NoParametersAPI("CryptoGetAccountBalance", "Retrieves an account’s balance"));
-        registry.put("CryptoGetInfo", new NoParametersAPI("CryptoGetInfo", "Retrieves an account’s information"));
-        registry.put("CryptoGetStakers", new NoParametersAPI("CryptoGetStakers", "Retrieves the list of proxy stakers for a node"));
-        registry.put("CryptoApproveAllowance", new CryptoAllowance("CryptoApproveAllowance", "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
+        registry.put("CryptoUpdate", new NoParametersAPI("Crypto", "CryptoUpdate", "Updates an existing account"));
+        registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
+        registry.put("CryptoGetAccountRecords", new NoParametersAPI("Crypto", "CryptoGetAccountRecords", "Retrieves records for an account"));
+        registry.put("CryptoGetAccountBalance", new NoParametersAPI("Crypto", "CryptoGetAccountBalance", "Retrieves an account’s balance"));
+        registry.put("CryptoGetInfo", new NoParametersAPI("Crypto", "CryptoGetInfo", "Retrieves an account’s information"));
+        registry.put("CryptoGetStakers", new NoParametersAPI("Crypto", "CryptoGetStakers", "Retrieves the list of proxy stakers for a node"));
+        registry.put("CryptoApproveAllowance", new CryptoAllowance( "CryptoApproveAllowance", "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
         registry.put("CryptoAdjustAllowance", new CryptoAllowance("CryptoAdjustAllowance", "Adjusts the allowance assigned to a third party (HIP-336)"));
         registry.put("CryptoDeleteAllowance", new CryptoAllowance("CryptoDeleteAllowance", "Deletes non-fungible approved allowances from an owner's account"));
 
         // HCS
         registry.put("ConsensusCreateTopic", new HCSCreate());
-        registry.put("ConsensusUpdateTopic", new CryptoAllowance("ConsensusUpdateTopic", "Update an existing topic"));
-        registry.put("ConsensusDeleteTopic", new CryptoAllowance("ConsensusDeleteTopic", "Delete an existing topic"));
+        registry.put("ConsensusUpdateTopic", new NoParametersAPI("Consensus", "ConsensusUpdateTopic", "Update an existing topic"));
+        registry.put("ConsensusDeleteTopic", new NoParametersAPI("Consensus", "ConsensusDeleteTopic", "Delete an existing topic"));
         registry.put("ConsensusSubmitMessage", new HCSSubmit());
-        registry.put("ConsensusGetTopicInfo", new CryptoAllowance("ConsensusGetTopicInfo", "Retrieve a topic’s metadata"));
+        registry.put("ConsensusGetTopicInfo", new NoParametersAPI("Consensus", "ConsensusGetTopicInfo", "Retrieve a topic’s metadata"));
 
 
 

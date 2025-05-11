@@ -10,12 +10,17 @@ import java.util.Map;
 
 
 public class NoParametersAPI extends AbstractFeeModel {
+    String service;
     String api;
     String description;
-    public NoParametersAPI(String api, String description) {
+    public NoParametersAPI(String service, String api, String description) {
+        this.service = service;
         this.api = api;
         this.description = description;
     }
+
+    @Override
+    public String getService() { return service; }
 
     @Override
     public String getDescription() {

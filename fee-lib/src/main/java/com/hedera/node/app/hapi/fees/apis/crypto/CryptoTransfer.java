@@ -19,6 +19,11 @@ public class CryptoTransfer extends AbstractFeeModel {
     );
 
     @Override
+    public String getService() {
+        return "Crypto";
+    }
+
+    @Override
     public String getDescription() {
         return "Transfers a combination of hbars and tokens.";
     }

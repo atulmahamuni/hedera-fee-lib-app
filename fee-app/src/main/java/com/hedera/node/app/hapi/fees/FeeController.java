@@ -9,9 +9,34 @@ import java.util.*;
 @RequestMapping("/api/v1/")
 public class FeeController {
 
+//    @GetMapping("/transactions")
+//    public Set<String> getTransactionTypes() {
+//        LinkedHashMap<String, String[]> map = new LinkedHashMap();
+//        for (var key: FeeModelRegistry.registry.keySet()) {
+//            var exists = map.get(key);
+//            if (exists == null) {
+//                map.put(key, []);
+//            }
+//            map.get(key).append(FeeModelRegistry.registry.get(key).getService());
+//        }
+//
+////        return FeeModelRegistry.registry.keySet();
+//        return map;
+//    }
+
     @GetMapping("/transactions")
-    public Set<String> getTransactionTypes() {
-        return FeeModelRegistry.registry.keySet();
+    public Map<String, List<String>> getTransactionTypes() {
+        Map<String, List<String>> result = new LinkedHashMap<>();
+
+        for (var entry : FeeModelRegistry.registry.entrySet()) {
+            var tx = entry.getValue();
+            String service = tx.getService();
+            String name = entry.getKey();
+
+            result.computeIfAbsent(service, k -> new ArrayList<>()).add(name);
+        }
+
+        return result;
     }
 
     @GetMapping("/transactions/{type}/description")

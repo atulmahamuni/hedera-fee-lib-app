@@ -8,6 +8,9 @@ public abstract class AbstractFeeModel {
     );
 
     // Returns the description of the API
+    public abstract String getService();
+
+    // Returns the description of the API
     public abstract String getDescription();
 
     protected abstract List<ParameterDefinition> apiSpecificParams();

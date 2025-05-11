@@ -15,6 +15,11 @@ public class HCSCreate extends AbstractFeeModel {
     );
 
     @Override
+    public String getService() {
+        return "Consensus";
+    }
+
+    @Override
     public String getDescription() {
         return "Create a new HCS topic";
     }
