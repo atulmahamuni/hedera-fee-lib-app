@@ -12,7 +12,7 @@ import java.util.Map;
 public class TokenMint extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("fungibleOrNonFungible", "list", new Object[] {FTOrNFT.Fungible, FTOrNFT.NonFungible}, FTOrNFT.Fungible, 0, 0, "Fungible or Non-fungible token"),
-            new ParameterDefinition("numTokens", "number", null, 1, 1, 10, "Number of distinct tokens minted")
+            new ParameterDefinition("numTokens", "number", null, 1, 1, 10, "Number of tokens minted")
     );
 
     @Override

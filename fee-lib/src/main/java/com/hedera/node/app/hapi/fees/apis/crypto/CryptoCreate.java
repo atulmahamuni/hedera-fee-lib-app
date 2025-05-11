@@ -37,7 +37,7 @@ public class CryptoCreate extends AbstractFeeModel {
 
         int numKeys = (int) values.get("numKeys");
         if (numKeys > 1) {
-            fee.addDetail("Additional keys", numKeys, numKeys * BaseFeeRegistry.getBaseFee("PerKey"));
+            fee.addDetail("Additional keys", numKeys - 1, (numKeys - 1) * BaseFeeRegistry.getBaseFee("PerKey"));
         }
         return fee;
     }

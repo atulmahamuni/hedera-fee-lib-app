@@ -9,7 +9,6 @@ public class CryptoTransfer extends AbstractFeeModel {
 
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numAccountsInvolved", "number", null, 2, 0, 20, "Number of Accounts involved"),
-            new ParameterDefinition("numHbarEntries", "number", null, 2, 0, 10, "Number of Hbar entries"),
             new ParameterDefinition("numFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries without custom fee"),
             new ParameterDefinition("numNFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Non-Fungible token entries without custom fee"),
             new ParameterDefinition("numFTWithCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries with custom fee"),
@@ -39,8 +38,7 @@ public class CryptoTransfer extends AbstractFeeModel {
         if (!base.result) return base;
 
         if ( (int) values.get("numAccountsInvolved") < 2 ||
-                ((int) values.get("numHbarEntries") < 2 &&
-                (int) values.get("numFTNoCustomFeeEntries") < 2 &&
+                ((int) values.get("numFTNoCustomFeeEntries") < 2 &&
                 (int) values.get("numNFTNoCustomFeeEntries") < 2 &&
                 (int) values.get("numNFTWithCustomFeeEntries") < 2)) {
             return FeeCheckResult.failure("There must be at least 2 entries of hbar or token transfers.");
@@ -53,11 +51,10 @@ public class CryptoTransfer extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
+        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("CryptoTransfer"));
+
         if (values.get("numAccountsInvolved") instanceof Integer num && num > 2)
             fee.addDetail("Accounts involved", num, (num - 2) * BaseFeeRegistry.getBaseFee("PerCryptoTransferAccount"));
-
-        if (values.get("numHbarEntries") instanceof Integer num && num > 0)
-            fee.addDetail("HBAR transfers", num, BaseFeeRegistry.getBaseFee("CryptoTransfer"));
 
         if (values.get("numFTNoCustomFeeEntries") instanceof Integer num && num > 0)
             fee.addDetail("FT no custom fee", num, num * BaseFeeRegistry.getBaseFee("TokenTransferNoCustomFee"));

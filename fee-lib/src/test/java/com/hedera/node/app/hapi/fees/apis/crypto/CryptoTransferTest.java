@@ -17,7 +17,6 @@ class CryptoTransferTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 2);
-        params.put("numHbarEntries", 2);
         FeeResult fee = transfer.computeFee(params);
         assertEquals(0.0001, fee.fee, "Simple hbar transfer");
     }
@@ -28,10 +27,15 @@ class CryptoTransferTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 5);
-        params.put("numHbarEntries", 10);
         FeeResult fee = transfer.computeFee(params);
-        assertEquals(0.00013, fee.fee, "Multiple hbar transfer");
+        assertEquals(0.00013 /* 0.0001 + (3 * 0.00001) */, fee.fee, "Multiple hbar transfer");
     }
+
+//     fees.put("PerSignature", 0.0001);
+//        fees.put("PerKey", 0.01);
+//        fees.put("PerHCSByte", 0.00001);
+//        fees.put("PerFileByte", 0.0001);
+//        fees.put("PerCryptoTransferAccount", 0.00001);
 
     @Test
     void testTokenTransfer() {
@@ -42,7 +46,7 @@ class CryptoTransferTest {
         params.put("numFTNoCustomFeeEntries", 1);
 
         FeeResult fee = transfer.computeFee(params);
-        assertEquals(0.00103, fee.fee, "Simple token transfer");
+        assertEquals(  0.0001 + (3 * 0.00001) + 0.001, fee.fee, "Simple token transfer");
     }
 
     @Test
@@ -54,7 +58,7 @@ class CryptoTransferTest {
         params.put("numFTNoCustomFeeEntries", 5);
 
         FeeResult fee = transfer.computeFee(params);
-        assertEquals(0.00508, fee.fee,"Multiple token transfers");
+        assertEquals(0.0001 + (8 * 0.00001) + (5 * 0.001), fee.fee,"Multiple token transfers");
     }
 
     @Test
@@ -63,11 +67,10 @@ class CryptoTransferTest {
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 10);
-        params.put("numHbarEntries", 10);
         params.put("numFTNoCustomFeeEntries", 5);
 
         FeeResult fee = transfer.computeFee(params);
-        assertEquals(0.00518, fee.fee,"Multiple hbar and token transfers");
+        assertEquals(0.0001 + (8 * 0.00001) + (5 * 0.001), fee.fee,"Multiple hbar and token transfers");
     }
 
     @Test
@@ -75,7 +78,6 @@ class CryptoTransferTest {
         CryptoTransfer transfer = new CryptoTransfer();
         Map<String, Object> params = new HashMap<>();
         params.put("numAccountsInvolved", 0);
-        params.put("numHbarEntries", 0);
         params.put("numFTNoCustomFeeEntries", 0);
         params.put("numNFTNoCustomFeeEntries", 0);
         params.put("numFTWithCustomFeeEntries", 0);
