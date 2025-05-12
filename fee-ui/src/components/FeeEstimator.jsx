@@ -17,7 +17,7 @@ export default function FeeEstimator() {
     Token: "https://files.hedera.com/Nav-Icon-Token-Service-std.svg?dm=1709012106",
     "Smart Contracts": "https://files.hedera.com/Nav-Icon-Smart-Contracts-std.svg?dm=1709012090",
     File: "https://files.hedera.com/Nav-Icon-Grant-Funding-std.svg?dm=1709012009",
-    Miscellaneous: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983"
+    Miscellaneous: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983",
   };
 
   useEffect(() => {
@@ -52,7 +52,16 @@ export default function FeeEstimator() {
     return () => clearTimeout(delayDebounceFn);
   }, [values, selectedApi]);
 
-  const updateValue = (name, value) => {
+  const updateValue = (name, inputValue, type) => {
+    let value = inputValue;
+    if (type === 'number') {
+      if (inputValue === "") {
+        value = "";
+      } else {
+        const parsed = parseInt(inputValue, 10);
+        value = isNaN(parsed) ? "" : parsed;
+      }
+    }
     setValues(prev => ({ ...prev, [name]: value }));
   };
 
@@ -132,7 +141,7 @@ export default function FeeEstimator() {
                                 type={param.type === 'boolean' ? 'checkbox' : 'text'}
                                 value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
                                 checked={param.type === 'boolean' ? values[param.name] || false : undefined}
-                                onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : parseInt(e.target.value, 10))}
+                                onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : e.target.value, param.type)}
                                 className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
                                 style={{ borderRadius: "30px" }}
                               />

@@ -1,0 +1,16 @@
+services:
+  fee-app:
+    build:
+      context: ./fee-app
+    ports:
+      - "8080:8080"
+    container_name: fee-app
+
+  fee-ui:
+    build:
+      context: ./fee-ui
+    ports:
+      - "3000:80"
+    depends_on:
+      - fee-app
+    container_name: fee-ui

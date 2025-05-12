@@ -9,7 +9,7 @@ function App() {
 //   const [count, setCount] = useState(0)
   return (
     <div className="min-h-screen p-6">
-      <h1 className="text-2xl font-bold text-center mb-8">Fee estimator (beta)</h1>
+      <h1 className="text-2xl font-bold text-center mb-8">Fee estimator (Proposed)</h1>
       <FeeEstimator />
     </div>
   );
