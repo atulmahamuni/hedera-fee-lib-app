@@ -46,6 +46,8 @@ public final class BaseFeeRegistry {
         fees.put("TokenMintFungible", 0.00100);
         fees.put("TokenMintNonFungible", 0.02000);
         fees.put("TokenBurn", 0.00100);
+        fees.put("TokenPause", 0.00100);
+        fees.put("TokenUnpause", 0.00100);
         fees.put("TokenGetInfo", 0.00010);
         fees.put("TokenGrantKycToAccount", 0.00100);
         fees.put("TokenRevokeKycFromAccount", 0.00100);
@@ -60,7 +62,7 @@ public final class BaseFeeRegistry {
         fees.put("TokenClaimAirdrop", 0.00100);
         fees.put("TokenCancelAirdrop", 0.00100);
         fees.put("TokenReject", 0.00100);
-        fees.put("TokenUpdateFeeSchedule", 0.00100);
+        fees.put("TokenFeeScheduleUpdate", 0.00100);
         fees.put("GetAccountNftInfo", 0.00010);
         fees.put("GetTokenNftInfo", 0.00010);
         fees.put("GetTokenNftInfos", 0.00010);

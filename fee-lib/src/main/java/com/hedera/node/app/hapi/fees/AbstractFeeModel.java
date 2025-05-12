@@ -1,5 +1,6 @@
 package com.hedera.node.app.hapi.fees;
 
+import com.hedera.node.app.hapi.fees.apis.AssociateOrDissociate;
 import com.hedera.node.app.hapi.fees.apis.FTOrNFT;
 import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 
@@ -76,6 +77,8 @@ public abstract class AbstractFeeModel {
                         entry.setValue(YesOrNo.valueOf(strVal.toUpperCase()));
                     } else if (strVal.equalsIgnoreCase("Fungible") || strVal.equalsIgnoreCase("NonFungible")) {
                         entry.setValue(FTOrNFT.valueOf(strVal));
+                    } else if (strVal.equalsIgnoreCase("Associate") || strVal.equalsIgnoreCase("Dissociate")) {
+                        entry.setValue(AssociateOrDissociate.valueOf(strVal));
                     }
                 } catch (IllegalArgumentException e) {
                     // Ignore or log invalid enums if desired

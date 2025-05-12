@@ -6,9 +6,7 @@ import com.hedera.node.app.hapi.fees.apis.consensus.HCSSubmit;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
-import com.hedera.node.app.hapi.fees.apis.token.TokenCreate;
-import com.hedera.node.app.hapi.fees.apis.token.TokenMint;
-import com.hedera.node.app.hapi.fees.apis.token.TokenUpdate;
+import com.hedera.node.app.hapi.fees.apis.token.*;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,12 +42,12 @@ public class FeeModelRegistry {
         registry.put("TokenTransfer", new CryptoTransfer());
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
         registry.put("TokenMint", new TokenMint());
-        registry.put("TokenBurn", new NoParametersAPI("Token", "TokenBurn", "Burn existing token(s)"));
+        registry.put("TokenBurn", new TokenBurn());
         registry.put("TokenPause", new NoParametersAPI("Token", "TokenPause", "Pauses a token"));
         registry.put("TokenUnpause", new NoParametersAPI("Token", "TokenUnpause", "Unpauses a token"));
         registry.put("TokenFeeScheduleUpdate", new NoParametersAPI("Token", "TokenFeeScheduleUpdate", "Updates the custom fee schedule for a token"));
-        registry.put("TokenAssociateToAccount", new NoParametersAPI("Token", "TokenAssociateToAccount", "Associates token(s) to an account"));
-        registry.put("TokenDissociateFromAccount", new NoParametersAPI("Token", "TokenDissociateFromAccount", "Dissociates token(s) from an account"));
+        registry.put("TokenAssociateToAccount", new TokenAssociateDissociate());
+        registry.put("TokenDissociateFromAccount", new TokenAssociateDissociate());
         registry.put("TokenGrantKycToAccount", new NoParametersAPI("Token", "TokenGrantKycToAccount", "Grant KYC to an account from a particular token"));
         registry.put("TokenRevokeKycFromAccount", new NoParametersAPI("Token", "TokenRevokeKycFromAccount", "Revoke KYC from an account for a particular token"));
         registry.put("TokenFreezeAccount", new NoParametersAPI("Token", "TokenFreezeAccount", "Freeze an account for a particular token"));
