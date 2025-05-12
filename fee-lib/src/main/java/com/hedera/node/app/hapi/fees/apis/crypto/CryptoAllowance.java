@@ -42,8 +42,9 @@ public class CryptoAllowance extends AbstractFeeModel {
         fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
 
         int numAllowances = (int) values.get("numAllowances");
+        final int freeAllowances = 1;
         if (numAllowances > 1) {
-            fee.addDetail("Additional allowances", numAllowances, numAllowances * BaseFeeRegistry.getBaseFee(api));
+            fee.addDetail("Additional allowances", (numAllowances - freeAllowances), (numAllowances - freeAllowances) * BaseFeeRegistry.getBaseFee(api));
         }
         return fee;
     }

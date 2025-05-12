@@ -55,10 +55,13 @@ public abstract class AbstractFeeModel {
 
         // Compute the fee for parameters that are common across all APIs
         if (values.containsKey("numSignatures")) {
-            int numSignatures = (int) values.get("numSignatures");
-            int additionalSignatures = Math.max(numSignatures - 1, 0);
-            double fee = additionalSignatures * BaseFeeRegistry.getBaseFee("PerSignature");
-            result.addDetail("Additional signature verifications", additionalSignatures, fee);
+            final int numSignatures = (int) values.get("numSignatures");
+            final int numFreeSignatures = 1;
+            if (numSignatures > numFreeSignatures) {
+                final int additionalSignatures = numSignatures - numFreeSignatures;
+                final double fee = additionalSignatures * BaseFeeRegistry.getBaseFee("PerSignature");
+                result.addDetail("Additional signature verifications", additionalSignatures, fee);
+            }
         }
         return result;
     }

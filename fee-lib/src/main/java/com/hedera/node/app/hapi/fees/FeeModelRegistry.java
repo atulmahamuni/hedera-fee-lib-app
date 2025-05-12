@@ -18,7 +18,7 @@ public class FeeModelRegistry {
     static {
         // Crypto
         registry.put("CryptoCreate", new CryptoCreate());
-        registry.put("CryptoTransfer", new CryptoTransfer());
+        registry.put("CryptoTransfer", new CryptoTransfer("Crypto"));
         registry.put("CryptoUpdate", new NoParametersAPI("Crypto", "CryptoUpdate", "Updates an existing account"));
         registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
         registry.put("CryptoGetAccountRecords", new NoParametersAPI("Crypto", "CryptoGetAccountRecords", "Retrieves records for an account"));
@@ -39,7 +39,7 @@ public class FeeModelRegistry {
         // Token
         registry.put("TokenCreate", new TokenCreate());
         registry.put("TokenUpdate", new TokenUpdate());
-        registry.put("TokenTransfer", new CryptoTransfer());
+        registry.put("TokenTransfer", new CryptoTransfer("Token"));
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
         registry.put("TokenMint", new TokenMint());
         registry.put("TokenBurn", new TokenBurn());
@@ -52,7 +52,7 @@ public class FeeModelRegistry {
         registry.put("TokenRevokeKycFromAccount", new NoParametersAPI("Token", "TokenRevokeKycFromAccount", "Revoke KYC from an account for a particular token"));
         registry.put("TokenFreezeAccount", new NoParametersAPI("Token", "TokenFreezeAccount", "Freeze an account for a particular token"));
         registry.put("TokenUnfreezeAccount", new NoParametersAPI("Token", "TokenUnfreezeAccount", "Unfreeze an account for a particular token"));
-        registry.put("TokenAccountWipe", new NoParametersAPI("Token", "TokenAccountWipe", "Wipe tokens from an account"));
+        registry.put("TokenAccountWipe", new TokenWipe());
         registry.put("TokenGetInfo", new NoParametersAPI("Token", "TokenGetInfo", "Retrieve a token’s metadata"));
         registry.put("TokenGetNftInfo", new NoParametersAPI("Token", "TokenGetNftInfo", "Retrieve an NFT's information"));
 
