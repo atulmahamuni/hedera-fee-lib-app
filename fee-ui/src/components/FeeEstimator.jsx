@@ -125,7 +125,7 @@ export default function FeeEstimator() {
                   }, []).map((row, rowIndex) => (
                     <tr key={rowIndex} className="align-bottom">
                       {row.map(param => (
-                        <td key={param.name} className="p-2 w-1/2">
+                        <td key={param.name} className="p-2 w-1/2" style={{verticalAlign: "top"}}>
                           <div className="flex flex-col">
                             <label className="block text-[#ccc] mb-1">{param.prompt}</label>
                             {param.type === 'list' ? (

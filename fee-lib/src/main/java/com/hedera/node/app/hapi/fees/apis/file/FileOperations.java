@@ -52,7 +52,7 @@ public class FileOperations extends AbstractFeeModel {
 
         int numBytes = (int) values.get("numBytes");
         if (numBytes > FILE_FREE_BYTES) {
-            fee.addDetail("Additional message size", (numBytes - FILE_FREE_BYTES), (numBytes - FILE_FREE_BYTES) * BaseFeeRegistry.getBaseFee("PerFileByte"));
+            fee.addDetail("Additional file size", (numBytes - FILE_FREE_BYTES), (numBytes - FILE_FREE_BYTES) * BaseFeeRegistry.getBaseFee("PerFileByte"));
         }
         return fee;
     }

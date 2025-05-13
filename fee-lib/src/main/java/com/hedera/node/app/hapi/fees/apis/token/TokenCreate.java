@@ -9,12 +9,11 @@ import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 import java.util.List;
 import java.util.Map;
 
-import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_KEYS;
-import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.*;
 
 public class TokenCreate extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numKeys", "number", null, MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys"),
+            new ParameterDefinition("numKeys", "number", null, FREE_KEYS_TOKEN, MIN_KEYS, MAX_KEYS, "Number of keys"),
             new ParameterDefinition("hasCustomFee", "list", new Object[] {YesOrNo.YES, YesOrNo.NO}, YesOrNo.NO, 0, 0, "Does this token have custom fee")
     );
 
@@ -46,9 +45,8 @@ public class TokenCreate extends AbstractFeeModel {
 
         int numKeys = (int) values.get("numKeys");
         // First 7 keys are included in the base fee: adminKey, kycKey, freezeKey, wipeKey, supplyKey, feeScheduleKey, pauseKey
-        final int numFreeKeys = 7;
-        if (numKeys > numFreeKeys) {
-            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee("PerKey"));
+        if (numKeys > FREE_KEYS_TOKEN) {
+            fee.addDetail("Additional keys", numKeys - FREE_KEYS_TOKEN, (numKeys - FREE_KEYS_TOKEN) * BaseFeeRegistry.getBaseFee("PerKey"));
         }
 
         return fee;
