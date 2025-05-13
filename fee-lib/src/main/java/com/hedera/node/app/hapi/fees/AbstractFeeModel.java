@@ -6,11 +6,14 @@ import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 
 import java.util.*;
 
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_SIGNATURES;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_SIGNATURES;
+
 public abstract class AbstractFeeModel {
     int numFreeSignatures = 1;
 
     protected static final List<ParameterDefinition> COMMON_PARAMS = List.of(
-            new ParameterDefinition("numSignatures", "number", null,1, 1, Integer.MAX_VALUE, "Executed Signatures Verifications count")
+            new ParameterDefinition("numSignatures", "number", null,MIN_SIGNATURES, MIN_SIGNATURES, MAX_SIGNATURES, "Executed Signatures Verifications count")
     );
 
     // Returns the description of the API

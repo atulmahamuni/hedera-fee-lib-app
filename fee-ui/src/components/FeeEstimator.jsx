@@ -140,14 +140,21 @@ export default function FeeEstimator() {
                                 ))}
                               </select>
                             ) : (
-                              <input
-                                type={param.type === 'boolean' ? 'checkbox' : 'text'}
-                                value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
-                                checked={param.type === 'boolean' ? values[param.name] || false : undefined}
-                                onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : e.target.value, param.type)}
-                                className="bg-[#2a2a2a] text-white border border-gray-600 rounded px-3 py-2"
-                                style={{ borderRadius: "30px" }}
-                              />
+                                <>
+                                  <input
+                                    type={param.type === 'boolean' ? 'checkbox' : 'text'}
+                                    value={param.type === 'boolean' ? undefined : values[param.name] ?? ""}
+                                    checked={param.type === 'boolean' ? values[param.name] || false : undefined}
+                                    onChange={(e) => updateValue(param.name, param.type === 'boolean' ? e.target.checked : e.target.value, param.type)}
+                                    className={`bg-[#2a2a2a] text-white border rounded px-3 py-2 ${param.type === 'number' && (values[param.name] < param.min || values[param.name] > param.max) ? 'border-red-500' : 'border-gray-600'}`}
+                                    style={{ borderRadius: "30px" }}
+                                  />
+                                  <div className="h-4 mt-1">
+                                    {param.type === 'number' && (values[param.name] < param.min || values[param.name] > param.max) && (
+                                      <span className="text-red-400 text-xs">Must be between {param.min} and {param.max}</span>
+                                    )}
+                                  </div>
+                                </>
                             )}
                           </div>
                         </td>

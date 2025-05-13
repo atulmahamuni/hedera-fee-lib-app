@@ -16,4 +16,7 @@ public final class FeeConstants {
     public static final int FREE_ALLOWANCES = 1;
     public static final int MIN_ALLOWANCES = 1;
     public static final int MAX_ALLOWANCES = 10;
+
+    public static final int MIN_SIGNATURES = 1;
+    public static final int MAX_SIGNATURES = 100;
 }
