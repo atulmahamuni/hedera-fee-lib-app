@@ -80,5 +80,17 @@ public class FeeModelRegistry {
         registry.put("FileGetInfo", new NoParametersAPI("File", "FileGetInfo", "Retrieve a file’s metadata"));
 
 
+        // Miscellaneous
+        registry.put("GetVersionInfo", new NoParametersAPI("Miscellaneous", "GetVersionInfo", "Retrieve the current version of the network"));
+        registry.put("GetByKey", new NoParametersAPI("Miscellaneous", "GetByKey", "Get entities by key"));
+        registry.put("TransactionGetReceipt", new NoParametersAPI("Miscellaneous", "TransactionGetReceipt", "Retrieve a transaction’s receipt"));
+        registry.put("TransactionGetRecord", new NoParametersAPI("Miscellaneous", "TransactionGetRecord", "Retrieve a transaction’s record"));
+        registry.put("SystemDelete", new NoParametersAPI("Miscellaneous", "SystemDelete", "System delete an existing file"));
+        registry.put("SystemUndelete", new NoParametersAPI("Miscellaneous", "SystemUndelete", "System undelete an existing file"));
+        registry.put("PrngTransaction", new NoParametersAPI("Miscellaneous", "PrngTransaction", "Generate a pseudorandom number"));
+        registry.put("CreateNode", new NoParametersAPI("Miscellaneous", "CreateNode", "Add a new node to the address book"));
+        registry.put("DeleteNode", new NoParametersAPI("Miscellaneous", "DeleteNode", "Delete a node from the address book"));
+        registry.put("UpdateNode", new NoParametersAPI("Miscellaneous", "UpdateNode", "Modify node attributes"));
+        registry.put("BatchTransaction", new NoParametersAPI("Miscellaneous", "BatchTransaction", "Submit outer transaction containing a batch"));
     }
 }
