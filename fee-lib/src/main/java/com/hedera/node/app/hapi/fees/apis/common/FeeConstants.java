@@ -13,6 +13,10 @@ public final class FeeConstants {
     public static final int HCS_MIN_BYTES = 1;
     public static final int HCS_MAX_BYTES = 1024;
 
+    public static final int FILE_FREE_BYTES = 1000;
+    public static final int FILE_MIN_BYTES = 1;
+    public static final int FILE_MAX_BYTES = 128*1024;
+
     public static final int FREE_ALLOWANCES = 1;
     public static final int MIN_ALLOWANCES = 1;
     public static final int MAX_ALLOWANCES = 10;

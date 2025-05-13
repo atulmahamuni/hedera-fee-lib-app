@@ -26,7 +26,7 @@ class HCSSubmitTest {
 
             double overage = (numBytes <= HCS_FREE_BYTES)
                     ? 0.0001
-                    : ((0.0001 + (numBytes - HCS_FREE_BYTES) * 0.00001));
+                    : ((0.0001 + (numBytes - HCS_FREE_BYTES) * 0.000011));
             overage = Math.round(overage * 1000000000) / 1000000000.0;
             assertEquals(overage, fee.fee, "HCS topic Submit without custom fee - " + numBytes + " bytes");
         }
@@ -48,7 +48,7 @@ class HCSSubmitTest {
 
             double overage = (numBytes <= HCS_FREE_BYTES)
                     ? 0.05
-                    : ((0.05 + (numBytes - HCS_FREE_BYTES) * 0.00001));
+                    : ((0.05 + (numBytes - HCS_FREE_BYTES) * 0.000011));
             overage = Math.round(overage * 1000000000) / 1000000000.0;
             assertEquals(overage, fee.fee, "HCS topic Submit without custom fee - " + numBytes + " bytes");
         }

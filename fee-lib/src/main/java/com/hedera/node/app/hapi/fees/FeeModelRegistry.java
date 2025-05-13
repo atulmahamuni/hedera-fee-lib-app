@@ -10,6 +10,7 @@ import com.hedera.node.app.hapi.fees.apis.contract.ContractCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
+import com.hedera.node.app.hapi.fees.apis.file.FileOperations;
 import com.hedera.node.app.hapi.fees.apis.token.*;
 
 import java.util.LinkedHashMap;
@@ -68,8 +69,16 @@ public class FeeModelRegistry {
         registry.put("ContractGetInfo", new NoParametersAPI("Smart Contract", "ContractGetInfo", "Retrieve a smart contract’s metadata"));
         registry.put("ContractCallLocal", new NoParametersAPI("Smart Contract", "ContractCallLocal", "Execute a smart contract call on a single node"));
         registry.put("ContractGetBytecode", new NoParametersAPI("Smart Contract", "ContractGetBytecode", "Retrieve a smart contract’s bytecode"));
-//        registry.put("GetBySolidityID", new NoParametersAPI("Smart Contract", "GetBySolidityID", "Retrieve a smart contract by solidity identifier"));
-//        registry.put("ContractGetRecords", new NoParametersAPI("Smart Contract", "ContractGetRecords", "Retrieve the records for a smart contract"));
+
+
+        // File
+        registry.put("FileCreate", new FileOperations("FileCreate", "Create a new file"));
+        registry.put("FileUpdate", new FileOperations("FileUpdate", "Update an existing file"));
+        registry.put("FileDelete", new NoParametersAPI("File", "FileDelete", "Delete an existing file"));
+        registry.put("FileAppend", new FileOperations("FileAppend", "Append to an existing file"));
+        registry.put("FileGetContents", new NoParametersAPI("File", "FileGetContents", "Retrieve the contents of a file"));
+        registry.put("FileGetInfo", new NoParametersAPI("File", "FileGetInfo", "Retrieve a file’s metadata"));
+
 
     }
 }
