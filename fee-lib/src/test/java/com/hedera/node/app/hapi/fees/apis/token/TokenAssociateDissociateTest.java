@@ -13,10 +13,9 @@ class TokenAssociateDissociateTest {
 
     @Test
     void testTokenAssociateOne() {
-        TokenAssociateDissociate topic = new TokenAssociateDissociate();
+        TokenAssociateDissociate topic = new TokenAssociateDissociate(AssociateOrDissociate.Associate);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
-        params.put("associateOrDissociate", AssociateOrDissociate.Associate);
         params.put("numTokenTypes", 1);
 
         FeeResult fee = topic.computeFee(params);
@@ -25,10 +24,9 @@ class TokenAssociateDissociateTest {
 
     @Test
     void testTokenAssociateMultiple() {
-        TokenAssociateDissociate topic = new TokenAssociateDissociate();
+        TokenAssociateDissociate topic = new TokenAssociateDissociate(AssociateOrDissociate.Associate);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
-        params.put("associateOrDissociate", AssociateOrDissociate.Associate);
         params.put("numTokenTypes", 10);
 
         FeeResult fee = topic.computeFee(params);
@@ -37,26 +35,24 @@ class TokenAssociateDissociateTest {
 
     @Test
     void testTokenDissociateOne() {
-        TokenAssociateDissociate topic = new TokenAssociateDissociate();
+        TokenAssociateDissociate topic = new TokenAssociateDissociate(AssociateOrDissociate.Dissociate);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
-        params.put("associateOrDissociate", AssociateOrDissociate.Dissociate);
         params.put("numTokenTypes", 1);
 
         FeeResult fee = topic.computeFee(params);
-        assertEquals(0.05, fee.fee, "Token associate");
+        assertEquals(0.05, fee.fee, "Token dissociate");
     }
 
     @Test
     void testTokenDissociateMultiple() {
-        TokenAssociateDissociate topic = new TokenAssociateDissociate();
+        TokenAssociateDissociate topic = new TokenAssociateDissociate(AssociateOrDissociate.Dissociate);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
-        params.put("associateOrDissociate", AssociateOrDissociate.Dissociate);
         params.put("numTokenTypes", 10);
 
         FeeResult fee = topic.computeFee(params);
-        assertEquals(10 * 0.05, fee.fee, "Token associate - 10");
+        assertEquals(10 * 0.05, fee.fee, "Token dissociate - 10");
     }
 
 }

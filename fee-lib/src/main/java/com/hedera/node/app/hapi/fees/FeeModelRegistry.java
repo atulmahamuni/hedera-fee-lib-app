@@ -1,5 +1,6 @@
 package com.hedera.node.app.hapi.fees;
 
+import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
 import com.hedera.node.app.hapi.fees.apis.common.EntityUpdate;
 import com.hedera.node.app.hapi.fees.apis.common.NoParametersAPI;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSCreate;
@@ -48,8 +49,8 @@ public class FeeModelRegistry {
         registry.put("TokenPause", new NoParametersAPI("Token", "TokenPause", "Pauses a token"));
         registry.put("TokenUnpause", new NoParametersAPI("Token", "TokenUnpause", "Unpauses a token"));
         registry.put("TokenFeeScheduleUpdate", new NoParametersAPI("Token", "TokenFeeScheduleUpdate", "Updates the custom fee schedule for a token"));
-        registry.put("TokenAssociateToAccount", new TokenAssociateDissociate());
-        registry.put("TokenDissociateFromAccount", new TokenAssociateDissociate());
+        registry.put("TokenAssociateToAccount", new TokenAssociateDissociate(AssociateOrDissociate.Associate));
+        registry.put("TokenDissociateFromAccount", new TokenAssociateDissociate(AssociateOrDissociate.Dissociate));
         registry.put("TokenGrantKycToAccount", new NoParametersAPI("Token", "TokenGrantKycToAccount", "Grant KYC to an account from a particular token"));
         registry.put("TokenRevokeKycFromAccount", new NoParametersAPI("Token", "TokenRevokeKycFromAccount", "Revoke KYC from an account for a particular token"));
         registry.put("TokenFreezeAccount", new NoParametersAPI("Token", "TokenFreezeAccount", "Freeze an account for a particular token"));

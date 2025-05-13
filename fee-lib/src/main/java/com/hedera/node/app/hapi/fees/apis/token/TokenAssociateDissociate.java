@@ -10,10 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 public class TokenAssociateDissociate extends AbstractFeeModel {
+    AssociateOrDissociate associateOrDissociate;
+
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("associateOrDissociate", "list", new Object[] {AssociateOrDissociate.Associate, AssociateOrDissociate.Dissociate}, AssociateOrDissociate.Associate, 0, 0, "Associate or dissociate operation"),
-            new ParameterDefinition("numTokenTypes", "number", null, 1, 1, 10, "Number of token-types to be associate/dissociated")
+            new ParameterDefinition("numTokenTypes", "number", null, 1, 1, 10, "Number of associated token-types")
     );
+
+    public TokenAssociateDissociate(AssociateOrDissociate associateOrDissociate) {
+        this.associateOrDissociate = associateOrDissociate;
+    }
 
     @Override
     public String getService() {
@@ -22,7 +27,7 @@ public class TokenAssociateDissociate extends AbstractFeeModel {
 
     @Override
     public String getDescription() {
-        return "Associate or Dissociate tokens-types to/from accounts";
+        return (this.associateOrDissociate == AssociateOrDissociate.Associate) ? "Associate tokens-types to accounts" : "Dissociate tokens-types from accounts";
     }
 
     @Override
@@ -42,7 +47,7 @@ public class TokenAssociateDissociate extends AbstractFeeModel {
         int numTokenTypes = (int) values.get("numTokenTypes");
         final int numFreeTokenTypes = 1;
         if (numTokenTypes > numFreeTokenTypes) {
-            fee.addDetail("Additional NFTs", numTokenTypes - numFreeTokenTypes, (numTokenTypes - numFreeTokenTypes) * baseFee);
+            fee.addDetail("Additional token-types", numTokenTypes - numFreeTokenTypes, (numTokenTypes - numFreeTokenTypes) * baseFee);
         }
 
         return fee;
