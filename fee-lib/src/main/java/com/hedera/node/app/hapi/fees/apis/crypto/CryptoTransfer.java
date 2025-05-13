@@ -15,9 +15,9 @@ public class CryptoTransfer extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numAccountsInvolved", "number", null, 2, 0, 20, "Number of Accounts involved"),
             new ParameterDefinition("numFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries without custom fee"),
-            new ParameterDefinition("numNFTNoCustomFeeEntries", "number", null, 0, 0, 10, "Non-Fungible token entries without custom fee"),
+            new ParameterDefinition("numNFTNoCustomFeeEntries", "number", null, 0, 0, 10, "NFT entries without custom fee"),
             new ParameterDefinition("numFTWithCustomFeeEntries", "number", null, 0, 0, 10, "Fungible token entries with custom fee"),
-            new ParameterDefinition("numNFTWithCustomFeeEntries", "number", null, 0, 0, 10, "Non-Fungible token entries with custom fee"),
+            new ParameterDefinition("numNFTWithCustomFeeEntries", "number", null, 0, 0, 10, "NFT entries with custom fee"),
             new ParameterDefinition("numAutoAssociationsCreated", "number", null, 0, 0, 10, "Auto-created token associations"),
             new ParameterDefinition("numAutoAccountsCreated", "number", null, 0, 0, 20, "Auto-created accounts")
     );

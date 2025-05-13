@@ -15,7 +15,7 @@ export default function FeeEstimator() {
     Crypto: "https://files.hedera.com/Nav-Icon-HBAR-std.svg?dm=1709012020",
     Consensus: "https://files.hedera.com/Nav-Icon-Consensus-Service-std.svg?dm=1709011923",
     Token: "https://files.hedera.com/Nav-Icon-Token-Service-std.svg?dm=1709012106",
-    "Smart Contracts": "https://files.hedera.com/Nav-Icon-Smart-Contracts-std.svg?dm=1709012090",
+    "Smart Contract": "https://files.hedera.com/Nav-Icon-Smart-Contracts-std.svg?dm=1709012090",
     File: "https://files.hedera.com/Nav-Icon-Grant-Funding-std.svg?dm=1709012009",
     Miscellaneous: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983",
   };

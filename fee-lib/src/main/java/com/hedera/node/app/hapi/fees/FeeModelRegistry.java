@@ -1,14 +1,15 @@
 package com.hedera.node.app.hapi.fees;
 
+import com.hedera.node.app.hapi.fees.apis.common.EntityUpdate;
 import com.hedera.node.app.hapi.fees.apis.NoParametersAPI;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSCreate;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSSubmit;
+import com.hedera.node.app.hapi.fees.apis.contract.ContractBasedOnGas;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
 import com.hedera.node.app.hapi.fees.apis.token.*;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class FeeModelRegistry {
         // Crypto
         registry.put("CryptoCreate", new CryptoCreate());
         registry.put("CryptoTransfer", new CryptoTransfer("Crypto"));
-        registry.put("CryptoUpdate", new NoParametersAPI("Crypto", "CryptoUpdate", "Updates an existing account"));
+        registry.put("CryptoUpdate", new EntityUpdate("Crypto", "CryptoUpdate", "Updates an existing account", 1));
         registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
         registry.put("CryptoGetAccountRecords", new NoParametersAPI("Crypto", "CryptoGetAccountRecords", "Retrieves records for an account"));
         registry.put("CryptoGetAccountBalance", new NoParametersAPI("Crypto", "CryptoGetAccountBalance", "Retrieves an account’s balance"));
@@ -31,14 +32,14 @@ public class FeeModelRegistry {
 
         // HCS
         registry.put("ConsensusCreateTopic", new HCSCreate());
-        registry.put("ConsensusUpdateTopic", new NoParametersAPI("Consensus", "ConsensusUpdateTopic", "Update an existing topic"));
+        registry.put("ConsensusUpdateTopic", new EntityUpdate("Consensus", "ConsensusUpdateTopic", "Update an existing topic", 1));
         registry.put("ConsensusDeleteTopic", new NoParametersAPI("Consensus", "ConsensusDeleteTopic", "Delete an existing topic"));
         registry.put("ConsensusSubmitMessage", new HCSSubmit());
         registry.put("ConsensusGetTopicInfo", new NoParametersAPI("Consensus", "ConsensusGetTopicInfo", "Retrieve a topic’s metadata"));
 
         // Token
         registry.put("TokenCreate", new TokenCreate());
-        registry.put("TokenUpdate", new TokenUpdate());
+        registry.put("TokenUpdate", new EntityUpdate("Token", "TokenUpdate", "Update an existing token-type", 7));
         registry.put("TokenTransfer", new CryptoTransfer("Token"));
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
         registry.put("TokenMint", new TokenMint());
@@ -55,6 +56,18 @@ public class FeeModelRegistry {
         registry.put("TokenAccountWipe", new TokenWipe());
         registry.put("TokenGetInfo", new NoParametersAPI("Token", "TokenGetInfo", "Retrieve a token’s metadata"));
         registry.put("TokenGetNftInfo", new NoParametersAPI("Token", "TokenGetNftInfo", "Retrieve an NFT's information"));
+
+        // Smart Contracts
+        registry.put("ContractCreate", new ContractBasedOnGas("ContractCreate", "Create a new Smart Contract", false));
+        registry.put("ContractUpdate", new EntityUpdate("Smart Contract", "ContractUpdate", "Update an existing Smart Contract", 1));
+        registry.put("ContractDelete", new NoParametersAPI("Smart Contract", "ContractDelete", "Delete an existing smart contract"));
+        registry.put("ContractCall", new ContractBasedOnGas("ContractCall", "Execute a smart contract call", false));
+        registry.put("EthereumTransaction", new ContractBasedOnGas("EthereumTransaction", "Submits a wrapped Ethereum Transaction per HIP-410", false));
+        registry.put("ContractGetInfo", new NoParametersAPI("Smart Contract", "ContractGetInfo", "Retrieve a smart contract’s metadata"));
+        registry.put("ContractCallLocal", new NoParametersAPI("Smart Contract", "ContractCallLocal", "Execute a smart contract call on a single node"));
+        registry.put("ContractGetBytecode", new NoParametersAPI("Smart Contract", "ContractGetBytecode", "Retrieve a smart contract’s bytecode"));
+//        registry.put("GetBySolidityID", new NoParametersAPI("Smart Contract", "GetBySolidityID", "Retrieve a smart contract by solidity identifier"));
+//        registry.put("ContractGetRecords", new NoParametersAPI("Smart Contract", "ContractGetRecords", "Retrieve the records for a smart contract"));
 
     }
 }

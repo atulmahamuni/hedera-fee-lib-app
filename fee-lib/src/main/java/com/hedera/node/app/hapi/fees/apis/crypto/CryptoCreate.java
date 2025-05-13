@@ -32,10 +32,13 @@ public class CryptoCreate extends AbstractFeeModel {
 
     @Override
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
+        super.setNumFreeSignatures(2);
+        
         FeeResult fee = new FeeResult();
         fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("CryptoCreate"));
 
         int numKeys = (int) values.get("numKeys");
+
         if (numKeys > 1) {
             fee.addDetail("Additional keys", numKeys - 1, (numKeys - 1) * BaseFeeRegistry.getBaseFee("PerKey"));
         }

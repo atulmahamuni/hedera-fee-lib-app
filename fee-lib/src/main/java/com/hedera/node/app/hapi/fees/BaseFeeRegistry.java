@@ -15,6 +15,7 @@ public final class BaseFeeRegistry {
         fees.put("PerHCSByte", 0.00001);
         fees.put("PerFileByte", 0.0001);
         fees.put("PerCryptoTransferAccount", 0.00001);
+        fees.put("PerGas", 0.0000000852);
 
         // Crypto service
         fees.put("CryptoCreate", 0.05000);
@@ -74,6 +75,7 @@ public final class BaseFeeRegistry {
         fees.put("ScheduleGetInfo", 0.00010);
 
         // Smart Contracts
+
         fees.put("ContractCreate", 1.00000);
         fees.put("ContractUpdate", 0.02600);
         fees.put("ContractDelete", 0.00700);
@@ -83,8 +85,8 @@ public final class BaseFeeRegistry {
         fees.put("GetBySolidityID", 0.00010);
         fees.put("ContractGetInfo", 0.00010);
         fees.put("ContractGetRecords", 0.00010);
-        fees.put("EthereumTransaction", 0.00000);
-
+        fees.put("EthereumTransactionSuccess", 0.00000);
+        fees.put("EthereumTransactionFail", 0.00010);
         // Files
         fees.put("FileCreate", 0.05000);
         fees.put("FileUpdate", 0.05000);
@@ -120,4 +122,5 @@ public final class BaseFeeRegistry {
     public static Map<String, Double> getAllBaseFees() {
         return BASE_FEES;
     }
+
 }

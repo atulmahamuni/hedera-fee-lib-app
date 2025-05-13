@@ -7,8 +7,10 @@ import com.hedera.node.app.hapi.fees.apis.YesOrNo;
 import java.util.*;
 
 public abstract class AbstractFeeModel {
+    int numFreeSignatures = 1;
+
     protected static final List<ParameterDefinition> COMMON_PARAMS = List.of(
-            new ParameterDefinition("numSignatures", "number", null,1, 1, Integer.MAX_VALUE, "Number of signatures")
+            new ParameterDefinition("numSignatures", "number", null,1, 1, Integer.MAX_VALUE, "Executed Signatures Verifications count")
     );
 
     // Returns the description of the API
@@ -46,6 +48,10 @@ public abstract class AbstractFeeModel {
         }
         return FeeCheckResult.success();
     }
+    public void setNumFreeSignatures(int numFreeSignatures) {
+        this.numFreeSignatures = numFreeSignatures;
+    }
+
 
     // Compute the fee. There are 2 parts to the fee. There's the API specific fee (e.g. cryptoCreate price is based on the number of keys), and there's fee for parameters that are common across all APIs (e.g. number of signatures)
     public FeeResult computeFee(Map<String, Object> values) {
@@ -56,7 +62,6 @@ public abstract class AbstractFeeModel {
         // Compute the fee for parameters that are common across all APIs
         if (values.containsKey("numSignatures")) {
             final int numSignatures = (int) values.get("numSignatures");
-            final int numFreeSignatures = 1;
             if (numSignatures > numFreeSignatures) {
                 final int additionalSignatures = numSignatures - numFreeSignatures;
                 final double fee = additionalSignatures * BaseFeeRegistry.getBaseFee("PerSignature");
