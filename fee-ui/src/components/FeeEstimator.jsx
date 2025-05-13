@@ -12,12 +12,12 @@ export default function FeeEstimator() {
   const backendUrlPrefix = "http://localhost:8080/api/v1/transactions";
 
   const serviceIcons = {
-    Crypto: "https://files.hedera.com/Nav-Icon-HBAR-std.svg?dm=1709012020",
-    Consensus: "https://files.hedera.com/Nav-Icon-Consensus-Service-std.svg?dm=1709011923",
-    Token: "https://files.hedera.com/Nav-Icon-Token-Service-std.svg?dm=1709012106",
+    "Crypto": "https://files.hedera.com/Nav-Icon-HBAR-std.svg?dm=1709012020",
+    "Consensus": "https://files.hedera.com/Nav-Icon-Consensus-Service-std.svg?dm=1709011923",
+    "Token": "https://files.hedera.com/Nav-Icon-Token-Service-std.svg?dm=1709012106",
     "Smart Contract": "https://files.hedera.com/Nav-Icon-Smart-Contracts-std.svg?dm=1709012090",
-    File: "https://files.hedera.com/Nav-Icon-Grant-Funding-std.svg?dm=1709012009",
-    Miscellaneous: "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983",
+    "File": "https://files.hedera.com/Nav-Icon-Grant-Funding-std.svg?dm=1709012009",
+    "Miscellaneous": "https://files.hedera.com/Nav-Icon-Fee-Estimator-std.svg?dm=1709011983",
   };
 
   useEffect(() => {
@@ -43,6 +43,9 @@ export default function FeeEstimator() {
 
   useEffect(() => {
     if (!selectedApi || Object.keys(values).length === 0) return;
+    // Since we auto-calculate the values (there's no submit button), if the user
+    // presses the delete key to enter a new value, we see a NaN.
+    // Wait for a bit before triggering calculations
     const delayDebounceFn = setTimeout(() => {
       axios.post(`${backendUrlPrefix}/${selectedApi}/fee`, values)
         .then(res => setFeeResult(res.data))
@@ -163,7 +166,7 @@ export default function FeeEstimator() {
       {feeResult && (
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-indigo-700 to-indigo-900 text-white p-4 shadow-inner mt-8">
           <div className="flex justify-between items-center">
-            <div className="text-lg font-semibold">API call estimate:</div>
+            <div className="text-lg font-semibold">API fee:</div>
             <div className="text-xl font-bold">{feeResult.fee.toFixed(5)} USD</div>
           </div>
           {feeResult.details && (

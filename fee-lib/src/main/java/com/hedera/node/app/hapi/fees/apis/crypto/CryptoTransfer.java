@@ -52,32 +52,6 @@ public class CryptoTransfer extends AbstractFeeModel {
         return FeeCheckResult.success();
     }
 
-//    @Override
-//    protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
-//        FeeResult fee = new FeeResult();
-//
-//
-//        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("CryptoTransfer"));
-//
-//        if (values.get("numAccountsInvolved") instanceof Integer num && num > 2)
-//            fee.addDetail("Accounts involved", num, (num - 2) * BaseFeeRegistry.getBaseFee("PerCryptoTransferAccount"));
-//
-//        if (values.get("numFTNoCustomFeeEntries") instanceof Integer num && num > 0)
-//            fee.addDetail("FT no custom fee", num, num * BaseFeeRegistry.getBaseFee("TokenTransferNoCustomFee"));
-//        if (values.get("numNFTNoCustomFeeEntries") instanceof Integer num && num > 0)
-//            fee.addDetail("NFT no custom fee", num,  num * BaseFeeRegistry.getBaseFee("TokenTransferNoCustomFee"));
-//        if (values.get("numFTWithCustomFeeEntries") instanceof Integer num && num > 0)
-//            fee.addDetail("FT with custom fee", num, num * BaseFeeRegistry.getBaseFee("TokenTransferWithCustomFee"));
-//        if (values.get("numNFTWithCustomFeeEntries") instanceof Integer num && num > 0)
-//            fee.addDetail("NFT with custom fee", num, num * BaseFeeRegistry.getBaseFee("TokenTransferWithCustomFee"));
-//        if (values.get("numAutoAssociationsCreated") instanceof Integer num && num > 0)
-//            fee.addDetail("Auto token associations", num, num * BaseFeeRegistry.getBaseFee("TokenAssociateToAccount"));
-//        if (values.get("numAutoAccountsCreated") instanceof Integer num && num > 0)
-//            fee.addDetail("Auto account creations", num, num * BaseFeeRegistry.getBaseFee("CryptoCreate"));
-//
-//        return fee;
-//    }
-
     private int getInt(Object value) {
         return (value instanceof Integer) ? (Integer) value : 0;
     }

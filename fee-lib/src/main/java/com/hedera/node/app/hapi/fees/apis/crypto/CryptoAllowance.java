@@ -8,12 +8,14 @@ import com.hedera.node.app.hapi.fees.ParameterDefinition;
 import java.util.List;
 import java.util.Map;
 
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.*;
+
 public class CryptoAllowance extends AbstractFeeModel {
     String api;
     String description;
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numAllowances", "number", null, 1, 1, Integer.MAX_VALUE, "Number of Allowances")
+            new ParameterDefinition("numAllowances", "number", null, MIN_ALLOWANCES, MIN_ALLOWANCES, MAX_ALLOWANCES, "Number of Allowances")
     );
 
     public CryptoAllowance(String api, String description) {
@@ -42,9 +44,8 @@ public class CryptoAllowance extends AbstractFeeModel {
         fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
 
         int numAllowances = (int) values.get("numAllowances");
-        final int freeAllowances = 1;
-        if (numAllowances > 1) {
-            fee.addDetail("Additional allowances", (numAllowances - freeAllowances), (numAllowances - freeAllowances) * BaseFeeRegistry.getBaseFee(api));
+        if (numAllowances > FREE_ALLOWANCES) {
+            fee.addDetail("Additional allowances", (numAllowances - FREE_ALLOWANCES), (numAllowances - FREE_ALLOWANCES) * BaseFeeRegistry.getBaseFee(api));
         }
         return fee;
     }
