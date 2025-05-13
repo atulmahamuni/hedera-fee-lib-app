@@ -9,7 +9,7 @@ export default function FeeEstimator() {
   const [values, setValues] = useState({});
   const [feeResult, setFeeResult] = useState(null);
 
-  const backendUrlPrefix = "http://localhost:8080/api/v1/transactions";
+  const backendUrlPrefix = import.meta.env.VITE_BACKEND_URL;
 
   const serviceIcons = {
     "Crypto": "https://files.hedera.com/Nav-Icon-HBAR-std.svg?dm=1709012020",
