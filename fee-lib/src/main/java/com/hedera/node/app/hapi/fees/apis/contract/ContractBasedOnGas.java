@@ -8,7 +8,7 @@ import com.hedera.node.app.hapi.fees.ParameterDefinition;
 import java.util.List;
 import java.util.Map;
 
-import static com.hedera.node.app.hapi.fees.FeeConstants.*;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.*;
 
 public class ContractBasedOnGas extends AbstractFeeModel {
     String api;

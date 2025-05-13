@@ -4,14 +4,17 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
-import com.hedera.node.app.hapi.fees.apis.YesOrNo;
+import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 
 import java.util.List;
 import java.util.Map;
 
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_KEYS;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
+
 public class TokenCreate extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numKeys", "number", null,1, 1, 50, "Number of keys"),
+            new ParameterDefinition("numKeys", "number", null, MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys"),
             new ParameterDefinition("hasCustomFee", "list", new Object[] {YesOrNo.YES, YesOrNo.NO}, YesOrNo.NO, 0, 0, "Does this token have custom fee")
     );
 

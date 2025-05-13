@@ -1,44 +1,49 @@
-package com.hedera.node.app.hapi.fees.apis.crypto;
+package com.hedera.node.app.hapi.fees.apis.contract;
 
 import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_KEYS;
 import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
 
-public class CryptoCreate extends AbstractFeeModel {
+public class ContractCreate extends ContractBasedOnGas {
     private String service = "Crypto";
 
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numKeys", "number", null, MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys")
     );
 
+    public ContractCreate(String api, String description, boolean isMinGasFree) {
+        super(api, description, isMinGasFree);
+    }
+
     @Override
     public String getService() {
-        return "Crypto";
+        return "Smart Contract";
     }
 
     @Override
     public String getDescription() {
-        return "Create a crypto new account";
+        return "Create a new contract";
     }
 
     @Override
     protected List<ParameterDefinition> apiSpecificParams() {
-        return params;
+        List<ParameterDefinition> p = new ArrayList<>(super.apiSpecificParams());
+        p.addAll(params);  // `params` is fine to use here
+        return p;
     }
 
     @Override
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
-        super.setNumFreeSignatures(2);
-
-        FeeResult fee = new FeeResult();
-        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("CryptoCreate"));
+        FeeResult fee = super.computeApiSpecificFee(values);
+//        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
 
         int numKeys = (int) values.get("numKeys");
 

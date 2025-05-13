@@ -1,10 +1,11 @@
 package com.hedera.node.app.hapi.fees;
 
 import com.hedera.node.app.hapi.fees.apis.common.EntityUpdate;
-import com.hedera.node.app.hapi.fees.apis.NoParametersAPI;
+import com.hedera.node.app.hapi.fees.apis.common.NoParametersAPI;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSCreate;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSSubmit;
 import com.hedera.node.app.hapi.fees.apis.contract.ContractBasedOnGas;
+import com.hedera.node.app.hapi.fees.apis.contract.ContractCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
@@ -58,7 +59,7 @@ public class FeeModelRegistry {
         registry.put("TokenGetNftInfo", new NoParametersAPI("Token", "TokenGetNftInfo", "Retrieve an NFT's information"));
 
         // Smart Contracts
-        registry.put("ContractCreate", new ContractBasedOnGas("ContractCreate", "Create a new Smart Contract", false));
+        registry.put("ContractCreate", new ContractCreate("ContractCreate", "Create a new Smart Contract", true));
         registry.put("ContractUpdate", new EntityUpdate("Smart Contract", "ContractUpdate", "Update an existing Smart Contract", 1));
         registry.put("ContractDelete", new NoParametersAPI("Smart Contract", "ContractDelete", "Delete an existing smart contract"));
         registry.put("ContractCall", new ContractBasedOnGas("ContractCall", "Execute a smart contract call", false));

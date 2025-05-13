@@ -8,6 +8,9 @@ import com.hedera.node.app.hapi.fees.ParameterDefinition;
 import java.util.List;
 import java.util.Map;
 
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_KEYS;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
+
 
 public class EntityUpdate extends AbstractFeeModel {
     String service;
@@ -16,7 +19,7 @@ public class EntityUpdate extends AbstractFeeModel {
     int numFreeKeys;
 
     private final List<ParameterDefinition> params = List.of(
-            new ParameterDefinition("numKeys", "number", null,1, 1, 50, "Number of keys")
+            new ParameterDefinition("numKeys", "number", null,MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys")
     );
 
     public EntityUpdate(String service, String api, String description, int numFreeKeys) {
@@ -36,7 +39,7 @@ public class EntityUpdate extends AbstractFeeModel {
 
     @Override
     protected List<ParameterDefinition> apiSpecificParams() {
-        return List.of();
+        return params;
     }
 
     @Override

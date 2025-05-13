@@ -1,8 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.token;
 
 import com.hedera.node.app.hapi.fees.FeeResult;
-import com.hedera.node.app.hapi.fees.apis.YesOrNo;
-import com.hedera.node.app.hapi.fees.apis.token.TokenCreate;
+import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

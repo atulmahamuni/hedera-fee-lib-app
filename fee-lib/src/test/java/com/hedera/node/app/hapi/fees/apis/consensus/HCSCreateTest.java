@@ -1,9 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.consensus;
 
-import com.hedera.node.app.hapi.fees.FeeCheckResult;
 import com.hedera.node.app.hapi.fees.FeeResult;
-import com.hedera.node.app.hapi.fees.apis.YesOrNo;
-import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
+import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

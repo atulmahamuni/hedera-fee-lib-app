@@ -1,4 +1,4 @@
-package com.hedera.node.app.hapi.fees.apis;
+package com.hedera.node.app.hapi.fees.apis.common;
 
 import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;

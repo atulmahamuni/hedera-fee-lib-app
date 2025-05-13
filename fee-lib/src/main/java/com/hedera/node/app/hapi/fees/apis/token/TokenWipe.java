@@ -4,7 +4,6 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
-import com.hedera.node.app.hapi.fees.apis.FTOrNFT;
 
 import java.util.List;
 import java.util.Map;

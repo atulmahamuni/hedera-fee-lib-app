@@ -1,8 +1,8 @@
 package com.hedera.node.app.hapi.fees;
 
-import com.hedera.node.app.hapi.fees.apis.AssociateOrDissociate;
-import com.hedera.node.app.hapi.fees.apis.FTOrNFT;
-import com.hedera.node.app.hapi.fees.apis.YesOrNo;
+import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
+import com.hedera.node.app.hapi.fees.apis.common.FTOrNFT;
+import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 
 import java.util.*;
 

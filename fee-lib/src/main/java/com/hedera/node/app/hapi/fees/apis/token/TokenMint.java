@@ -4,10 +4,12 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
-import com.hedera.node.app.hapi.fees.apis.FTOrNFT;
+import com.hedera.node.app.hapi.fees.apis.common.FTOrNFT;
 
 import java.util.List;
 import java.util.Map;
+
+import static com.hedera.node.app.hapi.fees.apis.common.FTOrNFT.NonFungible;
 
 public class TokenMint extends AbstractFeeModel {
     private final List<ParameterDefinition> params = List.of(
@@ -35,7 +37,7 @@ public class TokenMint extends AbstractFeeModel {
         FeeResult fee = new FeeResult();
 
         final FTOrNFT fungibleOrNonFungible = (FTOrNFT) values.get("fungibleOrNonFungible");
-        final boolean isNFT = fungibleOrNonFungible.equals("NonFungible");
+
         double baseFeeForMint = fungibleOrNonFungible == FTOrNFT.Fungible ? BaseFeeRegistry.getBaseFee("TokenMintFungible"): BaseFeeRegistry.getBaseFee("TokenMintNonFungible");
         fee.addDetail("Base fee", 1, baseFeeForMint);
 
