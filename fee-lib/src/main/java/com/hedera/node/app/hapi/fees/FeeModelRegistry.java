@@ -23,7 +23,7 @@ public class FeeModelRegistry {
 
     static {
         // Crypto
-        registry.put("CryptoCreate", new EntityCreate("Crypto", "CryptoCreate", "Create a new Account", 2, false));
+        registry.put("CryptoCreate", new EntityCreate("Crypto", "CryptoCreate", "Create a new Account", FREE_KEYS_DEFAULT, false));
         registry.put("CryptoTransfer", new CryptoTransfer("Crypto", "CryptoTransfer"));
         registry.put("CryptoUpdate", new EntityUpdate("Crypto", "CryptoUpdate", "Updates an existing account", 1));
         registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
