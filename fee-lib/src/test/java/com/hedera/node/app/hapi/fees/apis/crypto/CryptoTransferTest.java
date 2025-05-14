@@ -13,7 +13,7 @@ class CryptoTransferTest {
 
     @Test
     void testSimpleHbarTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 2);
@@ -23,7 +23,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleHbarTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 5);
@@ -33,7 +33,7 @@ class CryptoTransferTest {
 
     @Test
     void testTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 5);
@@ -45,7 +45,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 10);
@@ -57,7 +57,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleHbarAndMultipleTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 10);
@@ -69,7 +69,7 @@ class CryptoTransferTest {
 
     @Test
     void testInvalidParamsFailCheck() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
         Map<String, Object> params = new HashMap<>();
         params.put("numAccountsInvolved", 0);
         params.put("numFTNoCustomFeeEntries", 0);

@@ -24,7 +24,7 @@ public class FeeModelRegistry {
     static {
         // Crypto
         registry.put("CryptoCreate", new EntityCreate("Crypto", "CryptoCreate", "Create a new Account", 2, false));
-        registry.put("CryptoTransfer", new CryptoTransfer("Crypto"));
+        registry.put("CryptoTransfer", new CryptoTransfer("Crypto", "CryptoTransfer"));
         registry.put("CryptoUpdate", new EntityUpdate("Crypto", "CryptoUpdate", "Updates an existing account", 1));
         registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
         registry.put("CryptoGetAccountRecords", new NoParametersAPI("Crypto", "CryptoGetAccountRecords", "Retrieves records for an account"));
@@ -32,7 +32,6 @@ public class FeeModelRegistry {
         registry.put("CryptoGetInfo", new NoParametersAPI("Crypto", "CryptoGetInfo", "Retrieves an account’s information"));
         registry.put("CryptoGetStakers", new NoParametersAPI("Crypto", "CryptoGetStakers", "Retrieves the list of proxy stakers for a node"));
         registry.put("CryptoApproveAllowance", new CryptoAllowance( "CryptoApproveAllowance", "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
-        registry.put("CryptoAdjustAllowance", new CryptoAllowance("CryptoAdjustAllowance", "Adjusts the allowance assigned to a third party (HIP-336)"));
         registry.put("CryptoDeleteAllowance", new CryptoAllowance("CryptoDeleteAllowance", "Deletes non-fungible approved allowances from an owner's account"));
 
         // HCS
@@ -45,12 +44,18 @@ public class FeeModelRegistry {
         // Token
         registry.put("TokenCreate", new EntityCreate("Token", "TokenCreate", "Create a new token-type", FREE_KEYS_TOKEN, true));
         registry.put("TokenUpdate", new EntityUpdate("Token", "TokenUpdate", "Update an existing token-type", 7));
-        registry.put("TokenTransfer", new CryptoTransfer("Token"));
+        registry.put("TokenTransfer", new CryptoTransfer("Token", "TokenTransfer"));
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
         registry.put("TokenMint", new TokenMint());
         registry.put("TokenBurn", new TokenBurn());
         registry.put("TokenPause", new NoParametersAPI("Token", "TokenPause", "Pauses a token"));
         registry.put("TokenUnpause", new NoParametersAPI("Token", "TokenUnpause", "Unpauses a token"));
+
+        registry.put("TokenAirdrop", new CryptoTransfer("Token", "TokenAirdrop"));
+        registry.put("TokenClaimAirdrop", new TokenAirdropOperations("TokenClaimAirdrop",  "Claim a pending airdrop"));
+        registry.put("TokenCancelAirdrop", new TokenAirdropOperations("TokenCancelAirdrop",  "Cancel a pending airdrop"));
+        registry.put("TokenReject", new TokenAirdropOperations("TokenReject",  "Reject a token and send back to treasury"));
+
         registry.put("TokenFeeScheduleUpdate", new NoParametersAPI("Token", "TokenFeeScheduleUpdate", "Updates the custom fee schedule for a token"));
         registry.put("TokenAssociateToAccount", new TokenAssociateDissociate(AssociateOrDissociate.Associate));
         registry.put("TokenDissociateFromAccount", new TokenAssociateDissociate(AssociateOrDissociate.Dissociate));
@@ -89,7 +94,6 @@ public class FeeModelRegistry {
         registry.put("ScheduleGetInfo", new NoParametersAPI("Miscellaneous", "ScheduleGetInfo", "Retrieve information about a scheduled transaction"));
 
         registry.put("GetVersionInfo", new NoParametersAPI("Miscellaneous", "GetVersionInfo", "Retrieve the current version of the network"));
-        registry.put("GetByKey", new NoParametersAPI("Miscellaneous", "GetByKey", "Get entities by key"));
         registry.put("TransactionGetReceipt", new NoParametersAPI("Miscellaneous", "TransactionGetReceipt", "Retrieve a transaction’s receipt"));
         registry.put("TransactionGetRecord", new NoParametersAPI("Miscellaneous", "TransactionGetRecord", "Retrieve a transaction’s record"));
         registry.put("SystemDelete", new NoParametersAPI("Miscellaneous", "SystemDelete", "System delete an existing file"));

@@ -27,7 +27,6 @@ public final class BaseFeeRegistry {
         fees.put("CryptoGetInfo", 0.00010);
         fees.put("CryptoGetStakers", 0.00010);
         fees.put("CryptoApproveAllowance", 0.05000);
-        fees.put("CryptoAdjustAllowance", 0.05000);
         fees.put("CryptoDeleteAllowance", 0.05000);
 
         // HCS
@@ -57,9 +56,10 @@ public final class BaseFeeRegistry {
         fees.put("TokenAccountWipe", 0.00100);
         fees.put("TokenAssociateToAccount", 0.05000);
         fees.put("TokenDissociateFromAccount", 0.05000);
-        fees.put("TokenTransferNoCustomFee", 0.001);
+        fees.put("TokenTransfer", 0.001);
         fees.put("TokenTransferWithCustomFee", 0.002);
         fees.put("TokenAirdrop", 0.10000);
+        fees.put("TokenAirdropWithCustomFee", 0.10100);
         fees.put("TokenClaimAirdrop", 0.00100);
         fees.put("TokenCancelAirdrop", 0.00100);
         fees.put("TokenReject", 0.00100);
@@ -97,7 +97,6 @@ public final class BaseFeeRegistry {
 
         // Misc
         fees.put("GetVersionInfo", 0.00010);
-        fees.put("GetByKey", 0.00010);
         fees.put("TransactionGetReceipt", 0.00000);
         fees.put("TransactionGetRecord", 0.00010);
         fees.put("SystemDelete", 0.00000);
