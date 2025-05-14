@@ -97,7 +97,7 @@ export default function FeeEstimator() {
         <div>
           <h2 className="text-sm text-[#8c8c8c] uppercase tracking-widest mb-1 border-b border-indigo-500 pb-1">Step 2</h2>
           <p className="text-lg font-semibold mb-4">Select a <span className="text-white font-bold">Network API</span></p>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 220px)' }}>
             {selectedService && apiMap[selectedService]?.map(api => (
               <button
                 key={api}

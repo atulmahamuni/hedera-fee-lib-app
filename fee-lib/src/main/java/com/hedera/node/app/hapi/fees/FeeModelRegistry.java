@@ -65,7 +65,7 @@ public class FeeModelRegistry {
         registry.put("TokenUnfreezeAccount", new NoParametersAPI("Token", "TokenUnfreezeAccount", "Unfreeze an account for a particular token"));
         registry.put("TokenAccountWipe", new TokenWipe());
         registry.put("TokenGetInfo", new NoParametersAPI("Token", "TokenGetInfo", "Retrieve a token’s metadata"));
-        registry.put("TokenGetNftInfo", new NoParametersAPI("Token", "TokenGetNftInfo", "Retrieve an NFT's information"));
+        registry.put("TokenGetNftInfos", new TokenGetNftInfos("GetTokenNftInfos", "Retrieve multiple NFTs' information"));
 
         // Smart Contracts
         registry.put("ContractCreate", new ContractCreate("ContractCreate", "Create a new Smart Contract", true));
