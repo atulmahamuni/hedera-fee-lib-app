@@ -1,14 +1,13 @@
 package com.hedera.node.app.hapi.fees;
 
 import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
+import com.hedera.node.app.hapi.fees.apis.common.EntityCreate;
 import com.hedera.node.app.hapi.fees.apis.common.EntityUpdate;
 import com.hedera.node.app.hapi.fees.apis.common.NoParametersAPI;
-import com.hedera.node.app.hapi.fees.apis.consensus.HCSCreate;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSSubmit;
 import com.hedera.node.app.hapi.fees.apis.contract.ContractBasedOnGas;
 import com.hedera.node.app.hapi.fees.apis.contract.ContractCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoAllowance;
-import com.hedera.node.app.hapi.fees.apis.crypto.CryptoCreate;
 import com.hedera.node.app.hapi.fees.apis.crypto.CryptoTransfer;
 import com.hedera.node.app.hapi.fees.apis.file.FileOperations;
 import com.hedera.node.app.hapi.fees.apis.token.*;
@@ -16,12 +15,15 @@ import com.hedera.node.app.hapi.fees.apis.token.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.FREE_KEYS_DEFAULT;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.FREE_KEYS_TOKEN;
+
 public class FeeModelRegistry {
     public static final Map<String, AbstractFeeModel> registry = new LinkedHashMap<>();
 
     static {
         // Crypto
-        registry.put("CryptoCreate", new CryptoCreate());
+        registry.put("CryptoCreate", new EntityCreate("Crypto", "CryptoCreate", "Create a new Account", 2, false));
         registry.put("CryptoTransfer", new CryptoTransfer("Crypto"));
         registry.put("CryptoUpdate", new EntityUpdate("Crypto", "CryptoUpdate", "Updates an existing account", 1));
         registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
@@ -34,14 +36,14 @@ public class FeeModelRegistry {
         registry.put("CryptoDeleteAllowance", new CryptoAllowance("CryptoDeleteAllowance", "Deletes non-fungible approved allowances from an owner's account"));
 
         // HCS
-        registry.put("ConsensusCreateTopic", new HCSCreate());
+        registry.put("ConsensusCreateTopic", new EntityCreate("Consensus", "ConsensusCreateTopic", "Create a new topic", FREE_KEYS_DEFAULT, true));
         registry.put("ConsensusUpdateTopic", new EntityUpdate("Consensus", "ConsensusUpdateTopic", "Update an existing topic", 1));
         registry.put("ConsensusDeleteTopic", new NoParametersAPI("Consensus", "ConsensusDeleteTopic", "Delete an existing topic"));
         registry.put("ConsensusSubmitMessage", new HCSSubmit());
         registry.put("ConsensusGetTopicInfo", new NoParametersAPI("Consensus", "ConsensusGetTopicInfo", "Retrieve a topic’s metadata"));
 
         // Token
-        registry.put("TokenCreate", new TokenCreate());
+        registry.put("TokenCreate", new EntityCreate("Token", "TokenCreate", "Create a new token-type", FREE_KEYS_TOKEN, true));
         registry.put("TokenUpdate", new EntityUpdate("Token", "TokenUpdate", "Update an existing token-type", 7));
         registry.put("TokenTransfer", new CryptoTransfer("Token"));
         registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
@@ -81,6 +83,11 @@ public class FeeModelRegistry {
 
 
         // Miscellaneous
+        registry.put("ScheduleCreate", new EntityCreate("Miscellaneous", "ScheduleCreate", "Create a new scheduled transaction", FREE_KEYS_DEFAULT, false));
+        registry.put("ScheduleSign", new NoParametersAPI("Miscellaneous", "ScheduleSign", "Add a signature to a scheduled transaction"));
+        registry.put("ScheduleDelete", new NoParametersAPI("Miscellaneous", "ScheduleDelete", "Delete a scheduled transaction"));
+        registry.put("ScheduleGetInfo", new NoParametersAPI("Miscellaneous", "ScheduleGetInfo", "Retrieve information about a scheduled transaction"));
+
         registry.put("GetVersionInfo", new NoParametersAPI("Miscellaneous", "GetVersionInfo", "Retrieve the current version of the network"));
         registry.put("GetByKey", new NoParametersAPI("Miscellaneous", "GetByKey", "Get entities by key"));
         registry.put("TransactionGetReceipt", new NoParametersAPI("Miscellaneous", "TransactionGetReceipt", "Retrieve a transaction’s receipt"));

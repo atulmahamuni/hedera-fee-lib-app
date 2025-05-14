@@ -1,6 +1,5 @@
 package com.hedera.node.app.hapi.fees.apis.contract;
 
-import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
@@ -13,8 +12,6 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MAX_KEYS;
 import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
 
 public class ContractCreate extends ContractBasedOnGas {
-    private String service = "Crypto";
-
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numKeys", "number", null, MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys")
     );
@@ -23,10 +20,6 @@ public class ContractCreate extends ContractBasedOnGas {
         super(api, description, isMinGasFree);
     }
 
-    @Override
-    public String getService() {
-        return "Smart Contract";
-    }
 
     @Override
     public String getDescription() {
@@ -36,7 +29,7 @@ public class ContractCreate extends ContractBasedOnGas {
     @Override
     protected List<ParameterDefinition> apiSpecificParams() {
         List<ParameterDefinition> p = new ArrayList<>(super.apiSpecificParams());
-        p.addAll(params);  // `params` is fine to use here
+        p.addAll(params);
         return p;
     }
 

@@ -6,6 +6,7 @@ public final class FeeConstants {
     public static final int MIN_GAS = 21_000;
     public static final int MAX_GAS = 15_000_000;
 
+    public static final int FREE_KEYS_DEFAULT = 1; // First 1 key is included in the base fee: adminKey
     public static final int FREE_KEYS_TOKEN = 7; // First 7 keys are included in the base fee: adminKey, kycKey, freezeKey, wipeKey, supplyKey, feeScheduleKey, pauseKey
 
     public static final int MIN_KEYS = 1;
