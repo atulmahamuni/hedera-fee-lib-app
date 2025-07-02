@@ -37,12 +37,14 @@ public class HCSSubmit extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        YesOrNo hasCustomFee = (YesOrNo) values.get("hasCustomFee");
-        if (hasCustomFee == YesOrNo.NO) {
-            fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessage"));
-        } else {
-            fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessageWithCustomFee"));
+        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessage"));
+
+        // Custom fee surcharge
+        if (values.get("hasCustomFee") == YesOrNo.YES) {
+            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessageCustomFeeSurcharge"));
         }
+
+        // Size surcharge
         int numBytes = (int) values.get("numBytes");
         if (numBytes > HCS_FREE_BYTES) {
             fee.addDetail("Additional message size", (numBytes - HCS_FREE_BYTES), (numBytes - HCS_FREE_BYTES) * BaseFeeRegistry.getBaseFee("PerHCSByte"));

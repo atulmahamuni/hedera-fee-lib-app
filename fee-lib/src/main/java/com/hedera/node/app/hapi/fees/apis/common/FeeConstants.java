@@ -12,7 +12,7 @@ public final class FeeConstants {
     public static final int MIN_KEYS = 1;
     public static final int MAX_KEYS = 100;
 
-    public static final int TOKEN_FREE_TOKENS = 1;
+    public static final int TOKEN_FREE_TRANSFERS = 1;
 
 
     public static final int HCS_FREE_BYTES = 256;

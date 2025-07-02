@@ -58,10 +58,11 @@ public class EntityCreate extends AbstractFeeModel {
         super.setNumFreeSignatures(numFreeKeys + 1); // The user needs to sign each of the keys to verify that they have the corresponding private key
 
         FeeResult fee = new FeeResult();
+
+        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
+
         if (customFeeCapable && values.get("hasCustomFee") == YesOrNo.YES) {
-            fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api + "WithCustomFee"));
-        } else {
-            fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
+            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee(api + "CustomFeeSurcharge"));
         }
 
         int numKeys = (int) values.get("numKeys");

@@ -16,6 +16,11 @@ public final class BaseFeeRegistry {
         fees.put("PerFileByte", 0.000011);
         fees.put("PerCryptoTransferAccount", 0.00001);
         fees.put("PerGas", 0.0000000852);
+        fees.put("ConsensusCreateTopicCustomFeeSurcharge", 1.99);
+        fees.put("ConsensusSubmitMessageCustomFeeSurcharge", 0.0499);
+        fees.put("TokenCreateCustomFeeSurcharge", 1.00000);
+        fees.put("TokenTransferCustomFeeSurcharge", 0.001);
+        fees.put("TokenAirdropCustomFeeSurcharge", 0.001);
 
         // Crypto service
         fees.put("CryptoCreate", 0.05000);
@@ -31,16 +36,13 @@ public final class BaseFeeRegistry {
 
         // HCS
         fees.put("ConsensusCreateTopic", 0.01000);
-        fees.put("ConsensusCreateTopicWithCustomFee", 2.0);
         fees.put("ConsensusUpdateTopic", 0.00022);
         fees.put("ConsensusDeleteTopic", 0.00500);
         fees.put("ConsensusSubmitMessage", 0.00010);
-        fees.put("ConsensusSubmitMessageWithCustomFee", 0.05000);
         fees.put("ConsensusGetTopicInfo", 0.00010);
 
         // HTS
         fees.put("TokenCreate", 1.00000);
-        fees.put("TokenCreateWithCustomFee", 2.00000);
         fees.put("TokenDelete", 0.00100);
         fees.put("TokenUpdate", 0.00100);
         fees.put("TokenMintFungible", 0.00100);
@@ -57,9 +59,7 @@ public final class BaseFeeRegistry {
         fees.put("TokenAssociateToAccount", 0.05000);
         fees.put("TokenDissociateFromAccount", 0.05000);
         fees.put("TokenTransfer", 0.001);
-        fees.put("TokenTransferWithCustomFee", 0.002);
         fees.put("TokenAirdrop", 0.10000);
-        fees.put("TokenAirdropWithCustomFee", 0.10100);
         fees.put("TokenClaimAirdrop", 0.00100);
         fees.put("TokenCancelAirdrop", 0.00100);
         fees.put("TokenReject", 0.00100);
@@ -116,10 +116,6 @@ public final class BaseFeeRegistry {
 
     public static double getBaseFee(String api) {
         return BASE_FEES.getOrDefault(api, 0.0);
-    }
-
-    public static Map<String, Double> getAllBaseFees() {
-        return BASE_FEES;
     }
 
 }

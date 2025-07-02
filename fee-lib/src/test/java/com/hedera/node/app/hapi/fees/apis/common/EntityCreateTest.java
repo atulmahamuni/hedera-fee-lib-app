@@ -65,11 +65,12 @@ class EntityCreateTest {
         params.put("hasCustomFee", YesOrNo.YES);
 
         FeeResult fee = entity.computeFee(params);
-        assertEquals(BaseFeeRegistry.getBaseFee("TokenCreateWithCustomFee") + 3 * BaseFeeRegistry.getBaseFee("PerKey"), fee.fee, "Token Create - has custom fee");
+
+        assertEquals(BaseFeeRegistry.getBaseFee("TokenCreate") + BaseFeeRegistry.getBaseFee("TokenCreateCustomFeeSurcharge") + 3 * BaseFeeRegistry.getBaseFee("PerKey"), fee.fee, "Token Create - has custom fee");
     }
 
     @Test
-    void testEntityCreateCustomFeeCapableTopicServiceNoCustomFee() {
+    void testEntityCreateCustomFeeCapableTopicNoCustomFee() {
         EntityCreate entity = new EntityCreate("Topic", "ConsensusCreateTopic", "Create a topic", 1, true);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
@@ -81,7 +82,7 @@ class EntityCreateTest {
     }
 
     @Test
-    void testEntityCreateCustomFeeCapableTopicServiceWithCustomFee() {
+    void testEntityCreateCustomFeeCapableTopicWithCustomFee() {
         EntityCreate entity = new EntityCreate("Topic", "ConsensusCreateTopic", "Create a topic", 1, true);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
@@ -89,7 +90,7 @@ class EntityCreateTest {
         params.put("hasCustomFee", YesOrNo.YES);
 
         FeeResult fee = entity.computeFee(params);
-        assertEquals(0 + BaseFeeRegistry.getBaseFee("ConsensusCreateTopicWithCustomFee") + 4 * BaseFeeRegistry.getBaseFee("PerKey"), fee.fee, "Topic Create - with custom fee");
+        assertEquals(0 + BaseFeeRegistry.getBaseFee("ConsensusCreateTopic") + BaseFeeRegistry.getBaseFee("ConsensusCreateTopicCustomFeeSurcharge") + 4 * BaseFeeRegistry.getBaseFee("PerKey"), fee.fee, "Topic Create - with custom fee");
     }
 
     @Test

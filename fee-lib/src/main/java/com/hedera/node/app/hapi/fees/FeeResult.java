@@ -20,6 +20,14 @@ public class FeeResult {
             this.value = value;
             this.fee = fee;
         }
+
+        @Override
+        public String toString() {
+            return "FeeDetail{" +
+                    "value=" + value +
+                    ", fee=" + String.format("%.6f", fee) +
+                    '}';
+        }
     }
 
     @Override

@@ -11,12 +11,13 @@ public class TransferTestScenario {
     int numNFTWithCustomFeeEntries;
     int numAutoAssociationsCreated;
     int numAutoAccountsCreated;
+    int numAirdropsExecutedAsTokenTransfers;
     double expectedFee;
 
     public TransferTestScenario(String api, int numSignatures, int numAccountsInvolved,
                         int numFTNoCustomFeeEntries, int numNFTNoCustomFeeEntries,
                         int numFTWithCustomFeeEntries, int numNFTWithCustomFeeEntries,
-                        int numAutoAssociationsCreated, int numAutoAccountsCreated,
+                        int numAutoAssociationsCreated, int numAutoAccountsCreated, int numAirdropsExecutedAsTokenTransfers,
                         double expectedFee) {
         this.api = api;
         this.numSignatures = numSignatures;
@@ -27,6 +28,7 @@ public class TransferTestScenario {
         this.numNFTWithCustomFeeEntries = numNFTWithCustomFeeEntries;
         this.numAutoAssociationsCreated = numAutoAssociationsCreated;
         this.numAutoAccountsCreated = numAutoAccountsCreated;
+        this.numAirdropsExecutedAsTokenTransfers = numAirdropsExecutedAsTokenTransfers;
         this.expectedFee = expectedFee;
     }
 
@@ -42,6 +44,7 @@ public class TransferTestScenario {
                 ", numNFTWithCustomFeeEntries=" + numNFTWithCustomFeeEntries +
                 ", numAutoAssociationsCreated=" + numAutoAssociationsCreated +
                 ", numAutoAccountsCreated=" + numAutoAccountsCreated +
+                ", numAirdropsExecutedAsTokenTransfers=" + numAirdropsExecutedAsTokenTransfers +
                 ", expectedFee=" + expectedFee +
                 '}';
     }

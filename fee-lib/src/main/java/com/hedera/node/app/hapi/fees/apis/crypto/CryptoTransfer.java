@@ -4,8 +4,10 @@ import com.hedera.node.app.hapi.fees.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.TOKEN_FREE_TOKENS;
+import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.TOKEN_FREE_TRANSFERS;
 
 public class CryptoTransfer extends AbstractFeeModel {
     String service;
@@ -19,6 +21,9 @@ public class CryptoTransfer extends AbstractFeeModel {
             new ParameterDefinition("numNFTWithCustomFeeEntries", "number", null, 0, 0, 10, "NFT entries with custom fee"),
             new ParameterDefinition("numAutoAssociationsCreated", "number", null, 0, 0, 10, "Auto-created token associations"),
             new ParameterDefinition("numAutoAccountsCreated", "number", null, 0, 0, 20, "Auto-created accounts")
+    );
+    private final List<ParameterDefinition> airdropParams = List.of(
+            new ParameterDefinition("numAirdropsExecutedAsTokenTransfers", "number", null, 2, 0, 20, "Number of Airdrops executed as TokenTransfers")
     );
 
     public CryptoTransfer(String service, String api) {
@@ -38,7 +43,11 @@ public class CryptoTransfer extends AbstractFeeModel {
 
     @Override
     protected List<ParameterDefinition> apiSpecificParams() {
-        return params;
+        if (api.equals("TokenAirdrop")) {
+            return Stream.concat(params.stream(), airdropParams.stream()).collect(Collectors.toList());
+        } else {
+            return params;
+        }
     }
 
     @Override
@@ -72,60 +81,54 @@ public class CryptoTransfer extends AbstractFeeModel {
         int nftNoCustom = getInt(values.get("numNFTNoCustomFeeEntries"));
         int ftWithCustom = getInt(values.get("numFTWithCustomFeeEntries"));
         int nftWithCustom = getInt(values.get("numNFTWithCustomFeeEntries"));
-        int customTokens = ftWithCustom + nftWithCustom;
-        boolean tokenTransfersPresent = (ftNoCustom + nftNoCustom + ftWithCustom + nftWithCustom) > 0;
+        int numAirdropsExecutedAsTokenTransfers = getInt(values.get("numAirdropsExecutedAsTokenTransfers"));
 
-        int numFreeTokens = TOKEN_FREE_TOKENS;
-        String effectiveApi = api;
+        int numCustomTokens = ftWithCustom + nftWithCustom;
+        int numTokenTransfers = ftNoCustom + nftNoCustom + numCustomTokens;
 
-        // If no token transfers are present, then treat it as CryptoTransfer (hbar transfer). Otherwise, treat it as a TokenTransfer
-        if (tokenTransfersPresent) {
-            if (api.equals("CryptoTransfer")) {
-                effectiveApi = "TokenTransfer";
-            }
+        if (numAirdropsExecutedAsTokenTransfers > numTokenTransfers) {
+            throw new IllegalArgumentException("Number of airdrops executed as token transfers cannot exceed the number of tokens");
+        }
+
+
+        // Find out the effective API: We allow a mix of hbar transfers and token transfers in a single API. Also, if the user calls a TokenAirdrop API
+        // and if the receiver is already associated with the token, then it becomes a normal TokenTransfer instead of an airdrop
+        // The API is effectively Airdrop only if there was at least one token transfer that went pending (i.e. didn't execute as a normal tokenTransfer)
+        // Otherwise, if there were token transfers present in the API call, then the API is effectively a TokenTransfer
+        // Otherwise, it's just a normal cryptoTransfer
+        String effectiveApi; // Either CryptoTransfer, TokenTransfer, or TokenAirdrop
+        int numEffectiveAirdrops = 0; // How many entries in the tokenTransferList really resulted in pending Airdrops (as against straight token-transfers)
+        int numEffectiveTokenTransfers = numTokenTransfers; // How many entries in the tokenTransferList were effectively normal token transfers
+        if (api.equals("TokenAirdrop") && numTokenTransfers > numAirdropsExecutedAsTokenTransfers) {
+            effectiveApi = "TokenAirdrop";
+            numEffectiveAirdrops = numTokenTransfers - numAirdropsExecutedAsTokenTransfers;
+            numEffectiveTokenTransfers = numAirdropsExecutedAsTokenTransfers;
+        } else if (numTokenTransfers > 0) {
+            effectiveApi = "TokenTransfer";
         } else {
             effectiveApi = "CryptoTransfer";
         }
 
-        // If tokens with custom fees are used, then use the higher base prices
-        if (customTokens > 0) {
-            if (effectiveApi.equals("TokenTransfer")) {
-                fee.addDetail("Base fee for " + effectiveApi + " (with Custom fee)", 1,  BaseFeeRegistry.getBaseFee("TokenTransferWithCustomFee"));
-            } else if (effectiveApi.equals("TokenAirdrop")) {
-                fee.addDetail("Base fee for " + effectiveApi + " (with Custom fee)", 1,  BaseFeeRegistry.getBaseFee("TokenAirdropWithCustomFee"));
-            }
-        } else {
-            fee.addDetail("Base fee for " + effectiveApi, 1, BaseFeeRegistry.getBaseFee(effectiveApi));
+        fee.addDetail("Base fee", 1,  BaseFeeRegistry.getBaseFee(effectiveApi));
+
+        // Overage for number of tokens transferred and airdropped. Remmeber that the first transfer is already included in the call, so don't double-count that.
+        int includedTokenTransfers = TOKEN_FREE_TRANSFERS;
+        if (numEffectiveAirdrops > includedTokenTransfers) {
+            fee.addDetail( "Airdrops", (numEffectiveAirdrops - includedTokenTransfers), (numEffectiveAirdrops - includedTokenTransfers) * BaseFeeRegistry.getBaseFee("TokenAirdrop"));
+            includedTokenTransfers = 0;
+        }
+        if (numEffectiveTokenTransfers  > includedTokenTransfers) {
+            fee.addDetail( "Token Transfers", (numEffectiveTokenTransfers - includedTokenTransfers), (numEffectiveTokenTransfers - includedTokenTransfers) * BaseFeeRegistry.getBaseFee("TokenTransfer"));
+        }
+
+        // Overage for the tokens with custom fee
+        if (numCustomTokens > 0) {
+            fee.addDetail("Custom fee", numCustomTokens, numCustomTokens * BaseFeeRegistry.getBaseFee("TokenTransferCustomFeeSurcharge"));
         }
 
         // Overage for the number of accounts that we need to update for handling this transaction
-        if (values.get("numAccountsInvolved") instanceof Integer num && num > 2)
+        if (values.get("numAccountsInvolved") instanceof Integer num && num > 2) {
             fee.addDetail("Accounts involved", (num - 2), (num - 2) * BaseFeeRegistry.getBaseFee("PerCryptoTransferAccount"));
-
-        // Overage for the number of token-types that we need to fetch for handling this transaction
-        // Process the tokens with Custom Fee first since we have already increased the base price to accommodate the presence of custom-fee tokens, and the included free token should count against the token with custom fee
-        if (ftWithCustom > 0) {
-            if ((ftWithCustom - numFreeTokens) > 0) {
-                fee.addDetail("FT with custom fee", (ftWithCustom - numFreeTokens), (ftWithCustom - numFreeTokens) * BaseFeeRegistry.getBaseFee("TokenTransferWithCustomFee"));
-            }
-            numFreeTokens = 0;
-        }
-        if (nftWithCustom > 0) {
-            if ((nftWithCustom - numFreeTokens) > 0) {
-                fee.addDetail("NFT with custom fee", (nftWithCustom - numFreeTokens), (nftWithCustom - numFreeTokens) * BaseFeeRegistry.getBaseFee("TokenTransferWithCustomFee"));
-            }
-            numFreeTokens = 0;
-        }
-        if (ftNoCustom > 0) {
-            if ((ftNoCustom - numFreeTokens) > 0) {
-                fee.addDetail("FT no custom fee", (ftNoCustom - numFreeTokens), (ftNoCustom - numFreeTokens) * BaseFeeRegistry.getBaseFee("TokenTransfer"));
-            }
-            numFreeTokens = 0;
-        }
-        if (nftNoCustom > 0) {
-            if ((nftNoCustom - numFreeTokens) > 0) {
-                fee.addDetail("NFT no custom fee", (nftNoCustom - numFreeTokens), (nftNoCustom - numFreeTokens) * BaseFeeRegistry.getBaseFee("TokenTransfer"));
-            }
         }
 
         // Overage for the number of entities created automatically (associations/accounts) during handling this transaction
