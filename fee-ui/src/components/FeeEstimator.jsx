@@ -42,7 +42,8 @@ export default function FeeEstimator() {
   }, [selectedApi]);
 
   useEffect(() => {
-    if (!selectedApi || Object.keys(values).length === 0) return;
+    if (!selectedApi) return;
+
     // Since we auto-calculate the values (there's no submit button), if the user
     // presses the delete key to enter a new value, we see a NaN.
     // Wait for a bit before triggering calculations
@@ -116,6 +117,7 @@ export default function FeeEstimator() {
           {selectedApi && (
             <>
               <p className="text-lg font-semibold mb-4">Enter the <span className="text-white font-bold">API call parameters</span> <span className="text-[#aaa]">({selectedApi})</span></p>
+              {parameters.length == 0 ? "This API has no parameters" : ""}
               <table className="w-full table-fixed text-sm">
                 <tbody>
                   {parameters.reduce((rows, param, index) => {

@@ -12,10 +12,27 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_SIGNATU
 
 public abstract class AbstractFeeModel {
     int numFreeSignatures = 1;
+    protected final boolean includeSignatures;
 
-    protected static final List<ParameterDefinition> COMMON_PARAMS = List.of(
-            new ParameterDefinition("numSignatures", "number", null,MIN_SIGNATURES, MIN_SIGNATURES, MAX_SIGNATURES, "Executed Signatures Verifications count")
-    );
+    protected AbstractFeeModel() {
+        // The default is to include signatures in the parameters list.
+        // Only a few APIs (e.g. CryptoGetAccountBalance and TransactionGetReceipt) are free and don't need to include the numSignatures parameter
+        this(true);
+    }
+
+    protected AbstractFeeModel(boolean includeSignatures) {
+        this.includeSignatures = includeSignatures;
+    }
+
+    protected List<ParameterDefinition> commonParams() {
+        if (!includeSignatures) {
+            return Collections.emptyList();
+        }
+        return List.of(
+                new ParameterDefinition("numSignatures", "number", null, MIN_SIGNATURES, MIN_SIGNATURES, MAX_SIGNATURES, "Executed Signatures Verifications count"
+                )
+        );
+    }
 
     // Returns the description of the API
     public abstract String getService();
@@ -27,7 +44,7 @@ public abstract class AbstractFeeModel {
 
     // Get the list of parameters that are relevant for the specified API
     public List<ParameterDefinition> getParameters() {
-        List<ParameterDefinition> merged = new ArrayList<>(COMMON_PARAMS);
+        List<ParameterDefinition> merged = new ArrayList<>(commonParams());
         merged.addAll(apiSpecificParams());
         return merged;
     }

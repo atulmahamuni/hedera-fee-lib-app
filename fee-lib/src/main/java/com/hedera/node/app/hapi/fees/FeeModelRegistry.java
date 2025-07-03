@@ -25,7 +25,7 @@ public class FeeModelRegistry {
         registry.put(FeeApi.CryptoUpdate, new EntityUpdate("Crypto", FeeApi.CryptoUpdate, "Updates an existing account", 1));
         registry.put(FeeApi.CryptoDelete, new NoParametersAPI("Crypto", FeeApi.CryptoDelete, "Deletes an existing account"));
         registry.put(FeeApi.CryptoGetAccountRecords, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountRecords, "Retrieves records for an account"));
-        registry.put(FeeApi.CryptoGetAccountBalance, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountBalance, "Retrieves an account’s balance"));
+        registry.put(FeeApi.CryptoGetAccountBalance, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountBalance, "Retrieves an account’s balance", false));
         registry.put(FeeApi.CryptoGetInfo, new NoParametersAPI("Crypto", FeeApi.CryptoGetInfo, "Retrieves an account’s information"));
         registry.put(FeeApi.CryptoApproveAllowance, new CryptoAllowance( FeeApi.CryptoApproveAllowance, "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
         registry.put(FeeApi.CryptoDeleteAllowance, new CryptoAllowance(FeeApi.CryptoDeleteAllowance, "Deletes non-fungible approved allowances from an owner's account"));
@@ -90,7 +90,7 @@ public class FeeModelRegistry {
         registry.put(FeeApi.ScheduleGetInfo, new NoParametersAPI("Miscellaneous", FeeApi.ScheduleGetInfo, "Retrieve information about a scheduled transaction"));
 
         registry.put(FeeApi.GetVersionInfo, new NoParametersAPI("Miscellaneous", FeeApi.GetVersionInfo, "Retrieve the current version of the network"));
-        registry.put(FeeApi.TransactionGetReceipt, new NoParametersAPI("Miscellaneous", FeeApi.TransactionGetReceipt, "Retrieve a transaction’s receipt"));
+        registry.put(FeeApi.TransactionGetReceipt, new NoParametersAPI("Miscellaneous", FeeApi.TransactionGetReceipt, "Retrieve a transaction’s receipt", false));
         registry.put(FeeApi.TransactionGetRecord, new NoParametersAPI("Miscellaneous", FeeApi.TransactionGetRecord, "Retrieve a transaction’s record"));
         registry.put(FeeApi.SystemDelete, new NoParametersAPI("Miscellaneous", FeeApi.SystemDelete, "System delete an existing file"));
         registry.put(FeeApi.SystemUndelete, new NoParametersAPI("Miscellaneous", FeeApi.SystemUndelete, "System undelete an existing file"));

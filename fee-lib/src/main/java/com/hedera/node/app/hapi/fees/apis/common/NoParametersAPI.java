@@ -13,10 +13,16 @@ public class NoParametersAPI extends AbstractFeeModel {
     String service;
     FeeApi api;
     String description;
-    public NoParametersAPI(String service, FeeApi api, String description) {
+
+    public NoParametersAPI(String service, FeeApi api, String description, boolean includeSignatures) {
+        super(includeSignatures);
         this.service = service;
         this.api = api;
         this.description = description;
+    }
+    // Overloaded constructor with default includeSignatures = true
+    public NoParametersAPI(String service, FeeApi api, String description) {
+        this(service, api, description, true);
     }
 
     @Override
