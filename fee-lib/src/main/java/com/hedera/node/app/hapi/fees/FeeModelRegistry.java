@@ -27,7 +27,6 @@ public class FeeModelRegistry {
         registry.put(FeeApi.CryptoGetAccountRecords, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountRecords, "Retrieves records for an account"));
         registry.put(FeeApi.CryptoGetAccountBalance, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountBalance, "Retrieves an account’s balance"));
         registry.put(FeeApi.CryptoGetInfo, new NoParametersAPI("Crypto", FeeApi.CryptoGetInfo, "Retrieves an account’s information"));
-        registry.put(FeeApi.CryptoGetStakers, new NoParametersAPI("Crypto", FeeApi.CryptoGetStakers, "Retrieves the list of proxy stakers for a node"));
         registry.put(FeeApi.CryptoApproveAllowance, new CryptoAllowance( FeeApi.CryptoApproveAllowance, "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
         registry.put(FeeApi.CryptoDeleteAllowance, new CryptoAllowance(FeeApi.CryptoDeleteAllowance, "Deletes non-fungible approved allowances from an owner's account"));
 

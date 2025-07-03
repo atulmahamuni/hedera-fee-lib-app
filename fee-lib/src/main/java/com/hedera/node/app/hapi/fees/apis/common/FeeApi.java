@@ -9,7 +9,6 @@ public enum FeeApi {
     CryptoGetAccountRecords,
     CryptoGetAccountBalance,
     CryptoGetInfo,
-    CryptoGetStakers,
     CryptoApproveAllowance,
     CryptoDeleteAllowance,
 

@@ -32,7 +32,6 @@ public final class BaseFeeRegistry {
         fees.put(FeeApi.CryptoGetAccountRecords, 0.00010);
         fees.put(FeeApi.CryptoGetAccountBalance, 0.00000);
         fees.put(FeeApi.CryptoGetInfo, 0.00010);
-        fees.put(FeeApi.CryptoGetStakers, 0.00010);
         fees.put(FeeApi.CryptoApproveAllowance, 0.05000);
         fees.put(FeeApi.CryptoDeleteAllowance, 0.05000);
 
