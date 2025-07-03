@@ -4,6 +4,7 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -11,11 +12,11 @@ import java.util.Map;
 import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.*;
 
 public class ContractBasedOnGas extends AbstractFeeModel {
-    String api;
+    FeeApi api;
     String description;
     boolean isMinGasFree;
 
-    public ContractBasedOnGas(String api, String description, boolean isMinGasFree) {
+    public ContractBasedOnGas(FeeApi api, String description, boolean isMinGasFree) {
         this.api = api;
         this.description = description;
         this.isMinGasFree = isMinGasFree;
@@ -47,7 +48,7 @@ public class ContractBasedOnGas extends AbstractFeeModel {
         int gas = (int) values.get("gas");
         int gasTobeCharged = Math.max((gas - (isMinGasFree ? MIN_GAS : 0)), 0);
         if (gasTobeCharged > 0) {
-            fee.addDetail("Additional Gas fee", (gasTobeCharged), (gasTobeCharged) * BaseFeeRegistry.getBaseFee("PerGas"));
+            fee.addDetail("Additional Gas fee", (gasTobeCharged), (gasTobeCharged) * BaseFeeRegistry.getBaseFee(FeeApi.PerGas));
         }
         return fee;
     }

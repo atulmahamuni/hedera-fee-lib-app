@@ -4,6 +4,7 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class TokenWipe extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        double baseFeeForWipe = BaseFeeRegistry.getBaseFee("TokenAccountWipe");
+        double baseFeeForWipe = BaseFeeRegistry.getBaseFee(FeeApi.TokenAccountWipe);
         fee.addDetail("Base fee", 1, baseFeeForWipe);
 
         int numTokens = (int) values.get("numTokens");

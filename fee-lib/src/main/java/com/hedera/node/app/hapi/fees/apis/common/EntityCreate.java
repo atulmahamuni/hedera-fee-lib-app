@@ -15,7 +15,7 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
 
 public class EntityCreate extends AbstractFeeModel {
     private final String service;
-    private final String api;
+    private final FeeApi api;
     private final String description;
     private final int numFreeKeys;
     private final boolean customFeeCapable;
@@ -27,7 +27,7 @@ public class EntityCreate extends AbstractFeeModel {
             new ParameterDefinition("hasCustomFee", "list", new Object[] {YesOrNo.YES, YesOrNo.NO}, YesOrNo.NO, 0, 0, "Enable custom fee?")
     );
 
-    public EntityCreate(String service, String api, String description, int numFreeKeys, boolean customFeeCapable) {
+    public EntityCreate(String service, FeeApi api, String description, int numFreeKeys, boolean customFeeCapable) {
         this.service = service;
         this.api = api;
         this.description = description;
@@ -62,13 +62,21 @@ public class EntityCreate extends AbstractFeeModel {
         fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(api));
 
         if (customFeeCapable && values.get("hasCustomFee") == YesOrNo.YES) {
-            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee(api + "CustomFeeSurcharge"));
+            FeeApi customApi = switch(api) {
+                case ConsensusCreateTopic -> FeeApi.ConsensusCreateTopicCustomFeeSurcharge;
+                case ConsensusSubmitMessage -> FeeApi.ConsensusSubmitMessageCustomFeeSurcharge;
+                case TokenCreate -> FeeApi.TokenCreateCustomFeeSurcharge;
+                case TokenTransfer -> FeeApi.TokenTransferCustomFeeSurcharge;
+                case TokenAirdrop -> FeeApi.TokenAirdropCustomFeeSurcharge;
+                default -> throw new RuntimeException("Custom fee not specified for API: " + api);
+            };
+            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee(customApi));
         }
 
         int numKeys = (int) values.get("numKeys");
 
         if (numKeys > numFreeKeys) {
-            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee("PerKey"));
+            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee(FeeApi.PerKey));
         }
         return fee;
     }

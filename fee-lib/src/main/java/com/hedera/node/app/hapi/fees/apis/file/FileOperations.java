@@ -4,6 +4,7 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.*;
 
 
 public class FileOperations extends AbstractFeeModel {
-    String api;
+    FeeApi api;
     String description;
 
     private final List<ParameterDefinition> params = List.of(
@@ -20,7 +21,7 @@ public class FileOperations extends AbstractFeeModel {
             new ParameterDefinition("numBytes", "number", null, FILE_FREE_BYTES, FILE_MIN_BYTES, FILE_MAX_BYTES, "Size of the file (bytes)")
     );
 
-    public FileOperations( String api, String description) {
+    public FileOperations(FeeApi api, String description) {
         this.api = api;
         this.description = description;
     }
@@ -47,12 +48,12 @@ public class FileOperations extends AbstractFeeModel {
         int numKeys = (int) values.get("numKeys");
         int numFreeKeys = 1;
         if (numKeys > numFreeKeys) {
-            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee("PerKey"));
+            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee(FeeApi.PerKey));
         }
 
         int numBytes = (int) values.get("numBytes");
         if (numBytes > FILE_FREE_BYTES) {
-            fee.addDetail("Additional file size", (numBytes - FILE_FREE_BYTES), (numBytes - FILE_FREE_BYTES) * BaseFeeRegistry.getBaseFee("PerFileByte"));
+            fee.addDetail("Additional file size", (numBytes - FILE_FREE_BYTES), (numBytes - FILE_FREE_BYTES) * BaseFeeRegistry.getBaseFee(FeeApi.PerFileByte));
         }
         return fee;
     }

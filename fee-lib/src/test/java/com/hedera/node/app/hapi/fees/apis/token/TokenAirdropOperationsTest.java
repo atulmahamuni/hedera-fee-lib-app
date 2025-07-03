@@ -2,6 +2,7 @@ package com.hedera.node.app.hapi.fees.apis.token;
 
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -38,28 +39,28 @@ class TokenAirdropOperationsTest {
 
     List<TokenAirdropOperationsTestScenario> scenarios = List.of(
             // Base cases - 1 token should be included in the base price
-            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 1, 1, BaseFeeRegistry.getBaseFee("TokenClaimAirdrop")),
-            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 1, 1, BaseFeeRegistry.getBaseFee("TokenCancelAirdrop")),
-            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 1, 1, BaseFeeRegistry.getBaseFee("TokenRejectAirdrop")),
+            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 1, 1, BaseFeeRegistry.getBaseFee(FeeApi.TokenClaimAirdrop)),
+            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 1, 1, BaseFeeRegistry.getBaseFee(FeeApi.TokenCancelAirdrop)),
+            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 1, 1, BaseFeeRegistry.getBaseFee(FeeApi.TokenReject)),
 
             // Multiple tokens case
-            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee("TokenClaimAirdrop")),
-            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee("TokenCancelAirdrop")),
-            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee("TokenRejectAirdrop")),
+            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenClaimAirdrop)),
+            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenCancelAirdrop)),
+            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 1, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenReject)),
 
             // Additional signatures are charged
-            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee("TokenClaimAirdrop") + 4 * BaseFeeRegistry.getBaseFee("PerSignature")),
-            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee("TokenCancelAirdrop") + 4 * BaseFeeRegistry.getBaseFee("PerSignature")),
-            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee("TokenRejectAirdrop") + 4 * BaseFeeRegistry.getBaseFee("PerSignature"))
+            new TokenAirdropOperationsTestScenario("TokenClaimAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenClaimAirdrop) + 4 * BaseFeeRegistry.getBaseFee(FeeApi.PerSignature)),
+            new TokenAirdropOperationsTestScenario("TokenCancelAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenCancelAirdrop) + 4 * BaseFeeRegistry.getBaseFee(FeeApi.PerSignature)),
+            new TokenAirdropOperationsTestScenario("TokenRejectAirdrop", 5, 10, 10 * BaseFeeRegistry.getBaseFee(FeeApi.TokenReject) + 4 * BaseFeeRegistry.getBaseFee(FeeApi.PerSignature))
     );
 
     @Test
     void testPredefinedScenarios() {
         for (var scenario: scenarios) {
             TokenAirdropOperations op = switch (scenario.api) {
-                case "TokenClaimAirdrop" -> new TokenAirdropOperations("TokenClaimAirdrop", "dummy");
-                case "TokenCancelAirdrop" -> new TokenAirdropOperations("TokenCancelAirdrop", "dummy");
-                case "TokenRejectAirdrop" -> new TokenAirdropOperations("TokenRejectAirdrop", "dummy");
+                case "TokenClaimAirdrop" -> new TokenAirdropOperations(FeeApi.TokenClaimAirdrop, "dummy");
+                case "TokenCancelAirdrop" -> new TokenAirdropOperations(FeeApi.TokenCancelAirdrop, "dummy");
+                case "TokenRejectAirdrop" -> new TokenAirdropOperations(FeeApi.TokenReject, "dummy");
                 default -> throw new IllegalStateException("Unexpected value: " + scenario.api);
             };
 

@@ -12,7 +12,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateDummyService() {
-        EntityUpdate entity = new EntityUpdate("dummyService", "dummyAPI", "dummy description", 5);
+        EntityUpdate entity = new EntityUpdate("dummyService", FeeApi.MaxApi, "dummy description", 5);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 7);
@@ -23,7 +23,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateDummyServiceWithMultipleSignatures() {
-        EntityUpdate entity = new EntityUpdate("dummyService", "dummyAPI", "dummy description", 5);
+        EntityUpdate entity = new EntityUpdate("dummyService", FeeApi.MaxApi, "dummy description", 5);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 10);
         params.put("numKeys", 5);
@@ -34,7 +34,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateCryptoService() {
-        EntityUpdate entity = new EntityUpdate("Crypto", "CryptoUpdate", "Update an account", 1);
+        EntityUpdate entity = new EntityUpdate("Crypto", FeeApi.CryptoUpdate, "Update an account", 1);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 10);
@@ -45,7 +45,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateTokenService() {
-        EntityUpdate entity = new EntityUpdate("Token", "TokenUpdate", "Update a token type", 7);
+        EntityUpdate entity = new EntityUpdate("Token", FeeApi.TokenUpdate, "Update a token type", 7);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 10);
@@ -56,7 +56,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateTopicService() {
-        EntityUpdate entity = new EntityUpdate("Topic", "ConsensusUpdateTopic", "Update a topic", 1);
+        EntityUpdate entity = new EntityUpdate("Topic", FeeApi.ConsensusUpdateTopic, "Update a topic", 1);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 10);
@@ -67,7 +67,7 @@ class EntityUpdateTest {
 
     @Test
     void testEntityUpdateContractService() {
-        EntityUpdate entity = new EntityUpdate("Smart Contract", "ContractUpdate", "Update a smart contract", 1);
+        EntityUpdate entity = new EntityUpdate("Smart Contract", FeeApi.ContractUpdate, "Update a smart contract", 1);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 10);

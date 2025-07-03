@@ -14,7 +14,7 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.MIN_KEYS;
 
 public class EntityUpdate extends AbstractFeeModel {
     private final String service;
-    private final String api;
+    private final FeeApi api;
     private final String description;
     private final int numFreeKeys;
 
@@ -22,7 +22,7 @@ public class EntityUpdate extends AbstractFeeModel {
             new ParameterDefinition("numKeys", "number", null,MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys")
     );
 
-    public EntityUpdate(String service, String api, String description, int numFreeKeys) {
+    public EntityUpdate(String service, FeeApi api, String description, int numFreeKeys) {
         this.service = service;
         this.api = api;
         this.description = description;
@@ -50,7 +50,7 @@ public class EntityUpdate extends AbstractFeeModel {
 
         int numKeys = (int) values.get("numKeys");
         if (numKeys > numFreeKeys) {
-            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee("PerKey"));
+            fee.addDetail("Additional keys", numKeys - numFreeKeys, (numKeys - numFreeKeys) * BaseFeeRegistry.getBaseFee(FeeApi.PerKey));
         }
 
         return fee;

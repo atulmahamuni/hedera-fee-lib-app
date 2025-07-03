@@ -5,6 +5,7 @@ import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
 import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,8 @@ public class TokenAssociateDissociate extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        double baseFee = ((AssociateOrDissociate)values.get("associateOrDissociate") == AssociateOrDissociate.Associate) ?
-                BaseFeeRegistry.getBaseFee("TokenAssociateToAccount") : BaseFeeRegistry.getBaseFee("TokenDissociateFromAccount");
+        double baseFee = (values.get("associateOrDissociate") == AssociateOrDissociate.Associate) ?
+                BaseFeeRegistry.getBaseFee(FeeApi.TokenAssociateToAccount) : BaseFeeRegistry.getBaseFee(FeeApi.TokenDissociateFromAccount);
 
         fee.addDetail("Base fee", 1, baseFee);
 

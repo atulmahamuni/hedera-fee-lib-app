@@ -1,7 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.file;
 
 import com.hedera.node.app.hapi.fees.FeeResult;
-import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -14,7 +14,7 @@ class FileOperationsTest {
 
     @Test
     void testFileOperations() {
-        FileOperations transfer = new FileOperations("FileCreate", "dummy description");
+        FileOperations transfer = new FileOperations(FeeApi.FileCreate, "dummy description");
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numKeys", 1);

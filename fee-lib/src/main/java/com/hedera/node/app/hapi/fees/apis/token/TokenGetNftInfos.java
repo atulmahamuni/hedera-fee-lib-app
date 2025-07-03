@@ -4,19 +4,20 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
 
 // Handles tokenGetNFTInfo, tokenGetNFTInfo
 public class TokenGetNftInfos extends AbstractFeeModel {
-    String api;
+    FeeApi api;
     String desciption;
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numTokens", "number", null, 1, 1, 10, "Number of NFT serial numbers")
     );
 
-    public TokenGetNftInfos(String api, String desciption) {
+    public TokenGetNftInfos(FeeApi api, String desciption) {
         this.api = api;
         this.desciption = desciption;
     }
@@ -41,8 +42,8 @@ public class TokenGetNftInfos extends AbstractFeeModel {
         FeeResult fee = new FeeResult();
 
         double baseFee = switch (api) {
-            case "GetTokenNftInfo" -> BaseFeeRegistry.getBaseFee("GetTokenNftInfo");
-            case "GetTokenNftInfos" -> BaseFeeRegistry.getBaseFee("GetTokenNftInfos");
+            case TokenGetNftInfo -> BaseFeeRegistry.getBaseFee(FeeApi.TokenGetNftInfo);
+            case TokenGetNftInfos -> BaseFeeRegistry.getBaseFee(FeeApi.TokenGetNftInfos);
             default -> throw new IllegalStateException("Unexpected value: " + api);
         };
         fee.addDetail("Base fee", 1, baseFee);

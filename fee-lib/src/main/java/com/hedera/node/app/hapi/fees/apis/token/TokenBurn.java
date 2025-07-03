@@ -5,6 +5,7 @@ import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
 import com.hedera.node.app.hapi.fees.apis.common.FTOrNFT;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -36,14 +37,14 @@ public class TokenBurn extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("TokenBurn"));
+        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(FeeApi.TokenBurn));
 
         final FTOrNFT fungibleOrNonFungible = (FTOrNFT) values.get("fungibleOrNonFungible");
         if (fungibleOrNonFungible == NonFungible) {
             int numTokens = (int) values.get("numTokens");
             final int numFreeTokens = 1;
             if (numTokens > numFreeTokens) {
-                fee.addDetail("Additional NFTs", numTokens - numFreeTokens, (numTokens - numFreeTokens) * BaseFeeRegistry.getBaseFee("TokenBurn"));
+                fee.addDetail("Additional NFTs", numTokens - numFreeTokens, (numTokens - numFreeTokens) * BaseFeeRegistry.getBaseFee(FeeApi.TokenBurn));
             }
         }
 

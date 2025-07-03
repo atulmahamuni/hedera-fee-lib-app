@@ -2,6 +2,7 @@ package com.hedera.node.app.hapi.fees.apis.crypto;
 
 import com.hedera.node.app.hapi.fees.FeeCheckResult;
 import com.hedera.node.app.hapi.fees.FeeResult;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -13,7 +14,7 @@ class CryptoTransferTest {
 
     @Test
     void testSimpleHbarTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 2);
@@ -23,7 +24,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleHbarTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 5);
@@ -33,7 +34,7 @@ class CryptoTransferTest {
 
     @Test
     void testTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 5);
@@ -45,7 +46,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 10);
@@ -57,7 +58,7 @@ class CryptoTransferTest {
 
     @Test
     void testMultipleHbarAndMultipleTokenTransfer() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numSignatures", 1);
         params.put("numAccountsInvolved", 10);
@@ -69,7 +70,7 @@ class CryptoTransferTest {
 
     @Test
     void testInvalidParamsFailCheck() {
-        CryptoTransfer transfer = new CryptoTransfer("Crypto", "CryptoTransfer");
+        CryptoTransfer transfer = new CryptoTransfer("Crypto", FeeApi.CryptoTransfer);
         Map<String, Object> params = new HashMap<>();
         params.put("numAccountsInvolved", 0);
         params.put("numFTNoCustomFeeEntries", 0);

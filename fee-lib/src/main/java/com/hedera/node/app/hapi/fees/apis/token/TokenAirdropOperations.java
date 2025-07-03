@@ -4,19 +4,20 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
 
 // Handles tokenClaimAirdrop, tokenCancelAirdrop and tokenReject apis
 public class TokenAirdropOperations extends AbstractFeeModel {
-    String api;
+    FeeApi api;
     String desciption;
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numTokenTypes", "number", null, 1, 1, 10, "Number of token-types/NFT serials")
     );
 
-    public TokenAirdropOperations(String api, String desciption) {
+    public TokenAirdropOperations(FeeApi api, String desciption) {
         this.api = api;
         this.desciption = desciption;
     }

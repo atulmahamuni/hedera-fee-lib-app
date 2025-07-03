@@ -4,6 +4,7 @@ import com.hedera.node.app.hapi.fees.AbstractFeeModel;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 
 import java.util.List;
@@ -37,17 +38,17 @@ public class HCSSubmit extends AbstractFeeModel {
     protected FeeResult computeApiSpecificFee(Map<String, Object> values) {
         FeeResult fee = new FeeResult();
 
-        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessage"));
+        fee.addDetail("Base fee", 1, BaseFeeRegistry.getBaseFee(FeeApi.ConsensusSubmitMessage));
 
         // Custom fee surcharge
         if (values.get("hasCustomFee") == YesOrNo.YES) {
-            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee("ConsensusSubmitMessageCustomFeeSurcharge"));
+            fee.addDetail("Custom fee", 1, BaseFeeRegistry.getBaseFee(FeeApi.ConsensusSubmitMessageCustomFeeSurcharge));
         }
 
         // Size surcharge
         int numBytes = (int) values.get("numBytes");
         if (numBytes > HCS_FREE_BYTES) {
-            fee.addDetail("Additional message size", (numBytes - HCS_FREE_BYTES), (numBytes - HCS_FREE_BYTES) * BaseFeeRegistry.getBaseFee("PerHCSByte"));
+            fee.addDetail("Additional message size", (numBytes - HCS_FREE_BYTES), (numBytes - HCS_FREE_BYTES) * BaseFeeRegistry.getBaseFee(FeeApi.PerHCSByte));
         }
         return fee;
     }

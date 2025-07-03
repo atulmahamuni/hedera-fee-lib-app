@@ -1,6 +1,7 @@
 package com.hedera.node.app.hapi.fees.apis.crypto;
 
 import com.hedera.node.app.hapi.fees.*;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,7 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.TOKEN_FREE_
 
 public class CryptoTransfer extends AbstractFeeModel {
     String service;
-    String api;
+    FeeApi api;
 
     private final List<ParameterDefinition> params = List.of(
             new ParameterDefinition("numAccountsInvolved", "number", null, 2, 0, 20, "Number of Accounts involved"),
@@ -26,7 +27,7 @@ public class CryptoTransfer extends AbstractFeeModel {
             new ParameterDefinition("numAirdropsExecutedAsTokenTransfers", "number", null, 2, 0, 20, "Number of Airdrops executed as TokenTransfers")
     );
 
-    public CryptoTransfer(String service, String api) {
+    public CryptoTransfer(String service, FeeApi api) {
         this.service = service;
         this.api = api;
     }
@@ -43,7 +44,7 @@ public class CryptoTransfer extends AbstractFeeModel {
 
     @Override
     protected List<ParameterDefinition> apiSpecificParams() {
-        if (api.equals("TokenAirdrop")) {
+        if (api == FeeApi.TokenAirdrop) {
             return Stream.concat(params.stream(), airdropParams.stream()).collect(Collectors.toList());
         } else {
             return params;
@@ -96,17 +97,17 @@ public class CryptoTransfer extends AbstractFeeModel {
         // The API is effectively Airdrop only if there was at least one token transfer that went pending (i.e. didn't execute as a normal tokenTransfer)
         // Otherwise, if there were token transfers present in the API call, then the API is effectively a TokenTransfer
         // Otherwise, it's just a normal cryptoTransfer
-        String effectiveApi; // Either CryptoTransfer, TokenTransfer, or TokenAirdrop
+        FeeApi effectiveApi; // Either CryptoTransfer, TokenTransfer, or TokenAirdrop
         int numEffectiveAirdrops = 0; // How many entries in the tokenTransferList really resulted in pending Airdrops (as against straight token-transfers)
         int numEffectiveTokenTransfers = numTokenTransfers; // How many entries in the tokenTransferList were effectively normal token transfers
-        if (api.equals("TokenAirdrop") && numTokenTransfers > numAirdropsExecutedAsTokenTransfers) {
-            effectiveApi = "TokenAirdrop";
+        if (api == FeeApi.TokenAirdrop && numTokenTransfers > numAirdropsExecutedAsTokenTransfers) {
+            effectiveApi = FeeApi.TokenAirdrop;
             numEffectiveAirdrops = numTokenTransfers - numAirdropsExecutedAsTokenTransfers;
             numEffectiveTokenTransfers = numAirdropsExecutedAsTokenTransfers;
         } else if (numTokenTransfers > 0) {
-            effectiveApi = "TokenTransfer";
+            effectiveApi = FeeApi.TokenTransfer;
         } else {
-            effectiveApi = "CryptoTransfer";
+            effectiveApi = FeeApi.CryptoTransfer;
         }
 
         fee.addDetail("Base fee", 1,  BaseFeeRegistry.getBaseFee(effectiveApi));
@@ -114,28 +115,28 @@ public class CryptoTransfer extends AbstractFeeModel {
         // Overage for number of tokens transferred and airdropped. Remmeber that the first transfer is already included in the call, so don't double-count that.
         int includedTokenTransfers = TOKEN_FREE_TRANSFERS;
         if (numEffectiveAirdrops > includedTokenTransfers) {
-            fee.addDetail( "Airdrops", (numEffectiveAirdrops - includedTokenTransfers), (numEffectiveAirdrops - includedTokenTransfers) * BaseFeeRegistry.getBaseFee("TokenAirdrop"));
+            fee.addDetail( "Airdrops", (numEffectiveAirdrops - includedTokenTransfers), (numEffectiveAirdrops - includedTokenTransfers) * BaseFeeRegistry.getBaseFee(FeeApi.TokenAirdrop));
             includedTokenTransfers = 0;
         }
         if (numEffectiveTokenTransfers  > includedTokenTransfers) {
-            fee.addDetail( "Token Transfers", (numEffectiveTokenTransfers - includedTokenTransfers), (numEffectiveTokenTransfers - includedTokenTransfers) * BaseFeeRegistry.getBaseFee("TokenTransfer"));
+            fee.addDetail( "Token Transfers", (numEffectiveTokenTransfers - includedTokenTransfers), (numEffectiveTokenTransfers - includedTokenTransfers) * BaseFeeRegistry.getBaseFee(FeeApi.TokenTransfer));
         }
 
         // Overage for the tokens with custom fee
         if (numCustomTokens > 0) {
-            fee.addDetail("Custom fee", numCustomTokens, numCustomTokens * BaseFeeRegistry.getBaseFee("TokenTransferCustomFeeSurcharge"));
+            fee.addDetail("Custom fee", numCustomTokens, numCustomTokens * BaseFeeRegistry.getBaseFee(FeeApi.TokenTransferCustomFeeSurcharge));
         }
 
         // Overage for the number of accounts that we need to update for handling this transaction
         if (values.get("numAccountsInvolved") instanceof Integer num && num > 2) {
-            fee.addDetail("Accounts involved", (num - 2), (num - 2) * BaseFeeRegistry.getBaseFee("PerCryptoTransferAccount"));
+            fee.addDetail("Accounts involved", (num - 2), (num - 2) * BaseFeeRegistry.getBaseFee(FeeApi.PerCryptoTransferAccount));
         }
 
         // Overage for the number of entities created automatically (associations/accounts) during handling this transaction
         if (values.get("numAutoAssociationsCreated") instanceof Integer num && num > 0)
-            fee.addDetail("Auto token associations", num, num * BaseFeeRegistry.getBaseFee("TokenAssociateToAccount"));
+            fee.addDetail("Auto token associations", num, num * BaseFeeRegistry.getBaseFee(FeeApi.TokenAssociateToAccount));
         if (values.get("numAutoAccountsCreated") instanceof Integer num && num > 0)
-            fee.addDetail("Auto account creations", num, num * BaseFeeRegistry.getBaseFee("CryptoCreate"));
+            fee.addDetail("Auto account creations", num, num * BaseFeeRegistry.getBaseFee(FeeApi.CryptoCreate));
 
         return fee;
     }

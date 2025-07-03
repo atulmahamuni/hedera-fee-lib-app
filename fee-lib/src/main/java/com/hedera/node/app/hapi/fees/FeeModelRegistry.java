@@ -1,9 +1,6 @@
 package com.hedera.node.app.hapi.fees;
 
-import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
-import com.hedera.node.app.hapi.fees.apis.common.EntityCreate;
-import com.hedera.node.app.hapi.fees.apis.common.EntityUpdate;
-import com.hedera.node.app.hapi.fees.apis.common.NoParametersAPI;
+import com.hedera.node.app.hapi.fees.apis.common.*;
 import com.hedera.node.app.hapi.fees.apis.consensus.HCSSubmit;
 import com.hedera.node.app.hapi.fees.apis.contract.ContractBasedOnGas;
 import com.hedera.node.app.hapi.fees.apis.contract.ContractCreate;
@@ -19,89 +16,89 @@ import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.FREE_KEYS_D
 import static com.hedera.node.app.hapi.fees.apis.common.FeeConstants.FREE_KEYS_TOKEN;
 
 public class FeeModelRegistry {
-    public static final Map<String, AbstractFeeModel> registry = new LinkedHashMap<>();
+    public static final Map<FeeApi, AbstractFeeModel> registry = new LinkedHashMap<>();
 
     static {
         // Crypto
-        registry.put("CryptoCreate", new EntityCreate("Crypto", "CryptoCreate", "Create a new Account", FREE_KEYS_DEFAULT, false));
-        registry.put("CryptoTransfer", new CryptoTransfer("Crypto", "CryptoTransfer"));
-        registry.put("CryptoUpdate", new EntityUpdate("Crypto", "CryptoUpdate", "Updates an existing account", 1));
-        registry.put("CryptoDelete", new NoParametersAPI("Crypto", "CryptoDelete", "Deletes an existing account"));
-        registry.put("CryptoGetAccountRecords", new NoParametersAPI("Crypto", "CryptoGetAccountRecords", "Retrieves records for an account"));
-        registry.put("CryptoGetAccountBalance", new NoParametersAPI("Crypto", "CryptoGetAccountBalance", "Retrieves an account’s balance"));
-        registry.put("CryptoGetInfo", new NoParametersAPI("Crypto", "CryptoGetInfo", "Retrieves an account’s information"));
-        registry.put("CryptoGetStakers", new NoParametersAPI("Crypto", "CryptoGetStakers", "Retrieves the list of proxy stakers for a node"));
-        registry.put("CryptoApproveAllowance", new CryptoAllowance( "CryptoApproveAllowance", "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
-        registry.put("CryptoDeleteAllowance", new CryptoAllowance("CryptoDeleteAllowance", "Deletes non-fungible approved allowances from an owner's account"));
+        registry.put(FeeApi.CryptoCreate, new EntityCreate("Crypto", FeeApi.CryptoCreate, "Create a new Account", FREE_KEYS_DEFAULT, false));
+        registry.put(FeeApi.CryptoTransfer, new CryptoTransfer("Crypto", FeeApi.CryptoTransfer));
+        registry.put(FeeApi.CryptoUpdate, new EntityUpdate("Crypto", FeeApi.CryptoUpdate, "Updates an existing account", 1));
+        registry.put(FeeApi.CryptoDelete, new NoParametersAPI("Crypto", FeeApi.CryptoDelete, "Deletes an existing account"));
+        registry.put(FeeApi.CryptoGetAccountRecords, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountRecords, "Retrieves records for an account"));
+        registry.put(FeeApi.CryptoGetAccountBalance, new NoParametersAPI("Crypto", FeeApi.CryptoGetAccountBalance, "Retrieves an account’s balance"));
+        registry.put(FeeApi.CryptoGetInfo, new NoParametersAPI("Crypto", FeeApi.CryptoGetInfo, "Retrieves an account’s information"));
+        registry.put(FeeApi.CryptoGetStakers, new NoParametersAPI("Crypto", FeeApi.CryptoGetStakers, "Retrieves the list of proxy stakers for a node"));
+        registry.put(FeeApi.CryptoApproveAllowance, new CryptoAllowance( FeeApi.CryptoApproveAllowance, "Allows a third-party to transfer on behalf of a delegating account (HIP-336)"));
+        registry.put(FeeApi.CryptoDeleteAllowance, new CryptoAllowance(FeeApi.CryptoDeleteAllowance, "Deletes non-fungible approved allowances from an owner's account"));
 
         // HCS
-        registry.put("ConsensusCreateTopic", new EntityCreate("Consensus", "ConsensusCreateTopic", "Create a new topic", FREE_KEYS_DEFAULT, true));
-        registry.put("ConsensusUpdateTopic", new EntityUpdate("Consensus", "ConsensusUpdateTopic", "Update an existing topic", 1));
-        registry.put("ConsensusDeleteTopic", new NoParametersAPI("Consensus", "ConsensusDeleteTopic", "Delete an existing topic"));
-        registry.put("ConsensusSubmitMessage", new HCSSubmit());
-        registry.put("ConsensusGetTopicInfo", new NoParametersAPI("Consensus", "ConsensusGetTopicInfo", "Retrieve a topic’s metadata"));
+        registry.put(FeeApi.ConsensusCreateTopic, new EntityCreate("Consensus", FeeApi.ConsensusCreateTopic, "Create a new topic", FREE_KEYS_DEFAULT, true));
+        registry.put(FeeApi.ConsensusUpdateTopic, new EntityUpdate("Consensus", FeeApi.ConsensusUpdateTopic, "Update an existing topic", 1));
+        registry.put(FeeApi.ConsensusDeleteTopic, new NoParametersAPI("Consensus", FeeApi.ConsensusDeleteTopic, "Delete an existing topic"));
+        registry.put(FeeApi.ConsensusSubmitMessage, new HCSSubmit());
+        registry.put(FeeApi.ConsensusGetTopicInfo, new NoParametersAPI("Consensus", FeeApi.ConsensusGetTopicInfo, "Retrieve a topic’s metadata"));
 
         // Token
-        registry.put("TokenCreate", new EntityCreate("Token", "TokenCreate", "Create a new token-type", FREE_KEYS_TOKEN, true));
-        registry.put("TokenUpdate", new EntityUpdate("Token", "TokenUpdate", "Update an existing token-type", 7));
-        registry.put("TokenTransfer", new CryptoTransfer("Token", "TokenTransfer"));
-        registry.put("TokenDelete", new NoParametersAPI("Token", "TokenDelete", "Delete an existing token"));
-        registry.put("TokenMint", new TokenMint());
-        registry.put("TokenBurn", new TokenBurn());
-        registry.put("TokenPause", new NoParametersAPI("Token", "TokenPause", "Pauses a token"));
-        registry.put("TokenUnpause", new NoParametersAPI("Token", "TokenUnpause", "Unpauses a token"));
+        registry.put(FeeApi.TokenCreate, new EntityCreate("Token", FeeApi.TokenCreate, "Create a new token-type", FREE_KEYS_TOKEN, true));
+        registry.put(FeeApi.TokenUpdate, new EntityUpdate("Token", FeeApi.TokenUpdate, "Update an existing token-type", 7));
+        registry.put(FeeApi.TokenTransfer, new CryptoTransfer("Token", FeeApi.TokenTransfer));
+        registry.put(FeeApi.TokenDelete, new NoParametersAPI("Token", FeeApi.TokenDelete, "Delete an existing token"));
+        registry.put(FeeApi.TokenMint, new TokenMint());
+        registry.put(FeeApi.TokenBurn, new TokenBurn());
+        registry.put(FeeApi.TokenPause, new NoParametersAPI("Token", FeeApi.TokenPause, "Pauses a token"));
+        registry.put(FeeApi.TokenUnpause, new NoParametersAPI("Token", FeeApi.TokenUnpause, "Unpauses a token"));
 
-        registry.put("TokenAirdrop", new CryptoTransfer("Token", "TokenAirdrop"));
-        registry.put("TokenClaimAirdrop", new TokenAirdropOperations("TokenClaimAirdrop",  "Claim a pending airdrop"));
-        registry.put("TokenCancelAirdrop", new TokenAirdropOperations("TokenCancelAirdrop",  "Cancel a pending airdrop"));
-        registry.put("TokenReject", new TokenAirdropOperations("TokenReject",  "Reject a token and send back to treasury"));
+        registry.put(FeeApi.TokenAirdrop, new CryptoTransfer("Token", FeeApi.TokenAirdrop));
+        registry.put(FeeApi.TokenClaimAirdrop, new TokenAirdropOperations(FeeApi.TokenClaimAirdrop,  "Claim a pending airdrop"));
+        registry.put(FeeApi.TokenCancelAirdrop, new TokenAirdropOperations(FeeApi.TokenCancelAirdrop,  "Cancel a pending airdrop"));
+        registry.put(FeeApi.TokenReject, new TokenAirdropOperations(FeeApi.TokenReject,  "Reject a token and send back to treasury"));
 
-        registry.put("TokenFeeScheduleUpdate", new NoParametersAPI("Token", "TokenFeeScheduleUpdate", "Updates the custom fee schedule for a token"));
-        registry.put("TokenAssociateToAccount", new TokenAssociateDissociate(AssociateOrDissociate.Associate));
-        registry.put("TokenDissociateFromAccount", new TokenAssociateDissociate(AssociateOrDissociate.Dissociate));
-        registry.put("TokenGrantKycToAccount", new NoParametersAPI("Token", "TokenGrantKycToAccount", "Grant KYC to an account from a particular token"));
-        registry.put("TokenRevokeKycFromAccount", new NoParametersAPI("Token", "TokenRevokeKycFromAccount", "Revoke KYC from an account for a particular token"));
-        registry.put("TokenFreezeAccount", new NoParametersAPI("Token", "TokenFreezeAccount", "Freeze an account for a particular token"));
-        registry.put("TokenUnfreezeAccount", new NoParametersAPI("Token", "TokenUnfreezeAccount", "Unfreeze an account for a particular token"));
-        registry.put("TokenAccountWipe", new TokenWipe());
-        registry.put("TokenGetInfo", new NoParametersAPI("Token", "TokenGetInfo", "Retrieve a token’s metadata"));
-        registry.put("TokenGetNftInfos", new TokenGetNftInfos("GetTokenNftInfos", "Retrieve multiple NFTs' information"));
+        registry.put(FeeApi.TokenFeeScheduleUpdate, new NoParametersAPI("Token", FeeApi.TokenFeeScheduleUpdate, "Updates the custom fee schedule for a token"));
+        registry.put(FeeApi.TokenAssociateToAccount, new TokenAssociateDissociate(AssociateOrDissociate.Associate));
+        registry.put(FeeApi.TokenDissociateFromAccount, new TokenAssociateDissociate(AssociateOrDissociate.Dissociate));
+        registry.put(FeeApi.TokenGrantKycToAccount, new NoParametersAPI("Token", FeeApi.TokenGrantKycToAccount, "Grant KYC to an account from a particular token"));
+        registry.put(FeeApi.TokenRevokeKycFromAccount, new NoParametersAPI("Token", FeeApi.TokenRevokeKycFromAccount, "Revoke KYC from an account for a particular token"));
+        registry.put(FeeApi.TokenFreezeAccount, new NoParametersAPI("Token", FeeApi.TokenFreezeAccount, "Freeze an account for a particular token"));
+        registry.put(FeeApi.TokenUnfreezeAccount, new NoParametersAPI("Token", FeeApi.TokenUnfreezeAccount, "Unfreeze an account for a particular token"));
+        registry.put(FeeApi.TokenAccountWipe, new TokenWipe());
+        registry.put(FeeApi.TokenGetInfo, new NoParametersAPI("Token", FeeApi.TokenGetInfo, "Retrieve a token’s metadata"));
+        registry.put(FeeApi.TokenGetNftInfos, new TokenGetNftInfos(FeeApi.TokenGetNftInfos, "Retrieve multiple NFTs' information"));
 
         // Smart Contracts
-        registry.put("ContractCreate", new ContractCreate("ContractCreate", "Create a new Smart Contract", true));
-        registry.put("ContractUpdate", new EntityUpdate("Smart Contract", "ContractUpdate", "Update an existing Smart Contract", 1));
-        registry.put("ContractDelete", new NoParametersAPI("Smart Contract", "ContractDelete", "Delete an existing smart contract"));
-        registry.put("ContractCall", new ContractBasedOnGas("ContractCall", "Execute a smart contract call", false));
-        registry.put("EthereumTransaction", new ContractBasedOnGas("EthereumTransaction", "Submits a wrapped Ethereum Transaction per HIP-410", false));
-        registry.put("ContractGetInfo", new NoParametersAPI("Smart Contract", "ContractGetInfo", "Retrieve a smart contract’s metadata"));
-        registry.put("ContractCallLocal", new NoParametersAPI("Smart Contract", "ContractCallLocal", "Execute a smart contract call on a single node"));
-        registry.put("ContractGetBytecode", new NoParametersAPI("Smart Contract", "ContractGetBytecode", "Retrieve a smart contract’s bytecode"));
+        registry.put(FeeApi.ContractCreate, new ContractCreate(FeeApi.ContractCreate, "Create a new Smart Contract", true));
+        registry.put(FeeApi.ContractUpdate, new EntityUpdate("Smart Contract", FeeApi.ContractUpdate, "Update an existing Smart Contract", 1));
+        registry.put(FeeApi.ContractDelete, new NoParametersAPI("Smart Contract", FeeApi.ContractDelete, "Delete an existing smart contract"));
+        registry.put(FeeApi.ContractCall, new ContractBasedOnGas(FeeApi.ContractCall, "Execute a smart contract call", false));
+        registry.put(FeeApi.EthereumTransaction, new ContractBasedOnGas(FeeApi.EthereumTransaction, "Submits a wrapped Ethereum Transaction per HIP-410", false));
+        registry.put(FeeApi.ContractGetInfo, new NoParametersAPI("Smart Contract", FeeApi.ContractGetInfo, "Retrieve a smart contract’s metadata"));
+        registry.put(FeeApi.ContractCallLocal, new NoParametersAPI("Smart Contract", FeeApi.ContractCallLocal, "Execute a smart contract call on a single node"));
+        registry.put(FeeApi.ContractGetBytecode, new NoParametersAPI("Smart Contract", FeeApi.ContractGetBytecode, "Retrieve a smart contract’s bytecode"));
 
 
         // File
-        registry.put("FileCreate", new FileOperations("FileCreate", "Create a new file"));
-        registry.put("FileUpdate", new FileOperations("FileUpdate", "Update an existing file"));
-        registry.put("FileDelete", new NoParametersAPI("File", "FileDelete", "Delete an existing file"));
-        registry.put("FileAppend", new FileOperations("FileAppend", "Append to an existing file"));
-        registry.put("FileGetContents", new NoParametersAPI("File", "FileGetContents", "Retrieve the contents of a file"));
-        registry.put("FileGetInfo", new NoParametersAPI("File", "FileGetInfo", "Retrieve a file’s metadata"));
+        registry.put(FeeApi.FileCreate, new FileOperations(FeeApi.FileCreate, "Create a new file"));
+        registry.put(FeeApi.FileUpdate, new FileOperations(FeeApi.FileUpdate, "Update an existing file"));
+        registry.put(FeeApi.FileDelete, new NoParametersAPI("File", FeeApi.FileDelete, "Delete an existing file"));
+        registry.put(FeeApi.FileAppend, new FileOperations(FeeApi.FileAppend, "Append to an existing file"));
+        registry.put(FeeApi.FileGetContents, new NoParametersAPI("File", FeeApi.FileGetContents, "Retrieve the contents of a file"));
+        registry.put(FeeApi.FileGetInfo, new NoParametersAPI("File", FeeApi.FileGetInfo, "Retrieve a file’s metadata"));
 
 
         // Miscellaneous
-        registry.put("ScheduleCreate", new EntityCreate("Miscellaneous", "ScheduleCreate", "Create a new scheduled transaction", FREE_KEYS_DEFAULT, false));
-        registry.put("ScheduleSign", new NoParametersAPI("Miscellaneous", "ScheduleSign", "Add a signature to a scheduled transaction"));
-        registry.put("ScheduleDelete", new NoParametersAPI("Miscellaneous", "ScheduleDelete", "Delete a scheduled transaction"));
-        registry.put("ScheduleGetInfo", new NoParametersAPI("Miscellaneous", "ScheduleGetInfo", "Retrieve information about a scheduled transaction"));
+        registry.put(FeeApi.ScheduleCreate, new EntityCreate("Miscellaneous", FeeApi.ScheduleCreate, "Create a new scheduled transaction", FREE_KEYS_DEFAULT, false));
+        registry.put(FeeApi.ScheduleSign, new NoParametersAPI("Miscellaneous", FeeApi.ScheduleSign, "Add a signature to a scheduled transaction"));
+        registry.put(FeeApi.ScheduleDelete, new NoParametersAPI("Miscellaneous", FeeApi.ScheduleDelete, "Delete a scheduled transaction"));
+        registry.put(FeeApi.ScheduleGetInfo, new NoParametersAPI("Miscellaneous", FeeApi.ScheduleGetInfo, "Retrieve information about a scheduled transaction"));
 
-        registry.put("GetVersionInfo", new NoParametersAPI("Miscellaneous", "GetVersionInfo", "Retrieve the current version of the network"));
-        registry.put("TransactionGetReceipt", new NoParametersAPI("Miscellaneous", "TransactionGetReceipt", "Retrieve a transaction’s receipt"));
-        registry.put("TransactionGetRecord", new NoParametersAPI("Miscellaneous", "TransactionGetRecord", "Retrieve a transaction’s record"));
-        registry.put("SystemDelete", new NoParametersAPI("Miscellaneous", "SystemDelete", "System delete an existing file"));
-        registry.put("SystemUndelete", new NoParametersAPI("Miscellaneous", "SystemUndelete", "System undelete an existing file"));
-        registry.put("PrngTransaction", new NoParametersAPI("Miscellaneous", "PrngTransaction", "Generate a pseudorandom number"));
-        registry.put("CreateNode", new NoParametersAPI("Miscellaneous", "CreateNode", "Add a new node to the address book"));
-        registry.put("DeleteNode", new NoParametersAPI("Miscellaneous", "DeleteNode", "Delete a node from the address book"));
-        registry.put("UpdateNode", new NoParametersAPI("Miscellaneous", "UpdateNode", "Modify node attributes"));
-        registry.put("BatchTransaction", new NoParametersAPI("Miscellaneous", "BatchTransaction", "Submit outer transaction containing a batch"));
+        registry.put(FeeApi.GetVersionInfo, new NoParametersAPI("Miscellaneous", FeeApi.GetVersionInfo, "Retrieve the current version of the network"));
+        registry.put(FeeApi.TransactionGetReceipt, new NoParametersAPI("Miscellaneous", FeeApi.TransactionGetReceipt, "Retrieve a transaction’s receipt"));
+        registry.put(FeeApi.TransactionGetRecord, new NoParametersAPI("Miscellaneous", FeeApi.TransactionGetRecord, "Retrieve a transaction’s record"));
+        registry.put(FeeApi.SystemDelete, new NoParametersAPI("Miscellaneous", FeeApi.SystemDelete, "System delete an existing file"));
+        registry.put(FeeApi.SystemUndelete, new NoParametersAPI("Miscellaneous", FeeApi.SystemUndelete, "System undelete an existing file"));
+        registry.put(FeeApi.PrngTransaction, new NoParametersAPI("Miscellaneous", FeeApi.PrngTransaction, "Generate a pseudorandom number"));
+        registry.put(FeeApi.CreateNode, new NoParametersAPI("Miscellaneous", FeeApi.CreateNode, "Add a new node to the address book"));
+        registry.put(FeeApi.DeleteNode, new NoParametersAPI("Miscellaneous", FeeApi.DeleteNode, "Delete a node from the address book"));
+        registry.put(FeeApi.UpdateNode, new NoParametersAPI("Miscellaneous", FeeApi.UpdateNode, "Modify node attributes"));
+        registry.put(FeeApi.BatchTransaction, new NoParametersAPI("Miscellaneous", FeeApi.BatchTransaction, "Submit outer transaction containing a batch"));
     }
 }

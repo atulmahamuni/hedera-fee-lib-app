@@ -3,6 +3,7 @@ package com.hedera.node.app.hapi.fees.apis.contract;
 import com.hedera.node.app.hapi.fees.BaseFeeRegistry;
 import com.hedera.node.app.hapi.fees.FeeResult;
 import com.hedera.node.app.hapi.fees.ParameterDefinition;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ContractCreate extends ContractBasedOnGas {
             new ParameterDefinition("numKeys", "number", null, MIN_KEYS, MIN_KEYS, MAX_KEYS, "Number of keys")
     );
 
-    public ContractCreate(String api, String description, boolean isMinGasFree) {
+    public ContractCreate(FeeApi api, String description, boolean isMinGasFree) {
         super(api, description, isMinGasFree);
     }
 
@@ -41,7 +42,7 @@ public class ContractCreate extends ContractBasedOnGas {
         int numKeys = (int) values.get("numKeys");
 
         if (numKeys > 1) {
-            fee.addDetail("Additional keys", numKeys - 1, (numKeys - 1) * BaseFeeRegistry.getBaseFee("PerKey"));
+            fee.addDetail("Additional keys", numKeys - 1, (numKeys - 1) * BaseFeeRegistry.getBaseFee(FeeApi.PerKey));
         }
         return fee;
     }

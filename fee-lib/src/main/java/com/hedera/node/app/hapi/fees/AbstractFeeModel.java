@@ -2,6 +2,7 @@ package com.hedera.node.app.hapi.fees;
 
 import com.hedera.node.app.hapi.fees.apis.common.AssociateOrDissociate;
 import com.hedera.node.app.hapi.fees.apis.common.FTOrNFT;
+import com.hedera.node.app.hapi.fees.apis.common.FeeApi;
 import com.hedera.node.app.hapi.fees.apis.common.YesOrNo;
 
 import java.util.*;
@@ -67,7 +68,7 @@ public abstract class AbstractFeeModel {
             final int numSignatures = (int) values.get("numSignatures");
             if (numSignatures > numFreeSignatures) {
                 final int additionalSignatures = numSignatures - numFreeSignatures;
-                final double fee = additionalSignatures * BaseFeeRegistry.getBaseFee("PerSignature");
+                final double fee = additionalSignatures * BaseFeeRegistry.getBaseFee(FeeApi.PerSignature);
                 result.addDetail("Additional signature verifications", additionalSignatures, fee);
             }
         }
@@ -77,7 +78,6 @@ public abstract class AbstractFeeModel {
     // Compute API specific fee (e.g. cryptoCreate price is based on the number of keys)
     protected abstract FeeResult computeApiSpecificFee(Map<String, Object> values);
 
-    @SuppressWarnings("unchecked")
     private void preprocessEnumValues(Map<String, Object> values) {
         for (Map.Entry<String, Object> entry : values.entrySet()) {
             Object val = entry.getValue();

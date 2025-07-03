@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class NoParametersAPI extends AbstractFeeModel {
     String service;
-    String api;
+    FeeApi api;
     String description;
-    public NoParametersAPI(String service, String api, String description) {
+    public NoParametersAPI(String service, FeeApi api, String description) {
         this.service = service;
         this.api = api;
         this.description = description;
