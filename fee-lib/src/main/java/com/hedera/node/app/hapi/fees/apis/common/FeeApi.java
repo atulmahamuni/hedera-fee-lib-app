@@ -22,6 +22,7 @@ public enum FeeApi {
     // Token
     TokenCreate,
     TokenUpdate,
+    TokenUpdateNfts,
     TokenMintFungible,
     TokenMintNonFungible,
     TokenTransfer,

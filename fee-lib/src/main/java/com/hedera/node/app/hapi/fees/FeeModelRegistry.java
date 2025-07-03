@@ -40,6 +40,7 @@ public class FeeModelRegistry {
         // Token
         registry.put(FeeApi.TokenCreate, new EntityCreate("Token", FeeApi.TokenCreate, "Create a new token-type", FREE_KEYS_TOKEN, true));
         registry.put(FeeApi.TokenUpdate, new EntityUpdate("Token", FeeApi.TokenUpdate, "Update an existing token-type", 7));
+        registry.put(FeeApi.TokenUpdateNfts, new TokenUpdateNfts());
         registry.put(FeeApi.TokenTransfer, new CryptoTransfer("Token", FeeApi.TokenTransfer));
         registry.put(FeeApi.TokenDelete, new NoParametersAPI("Token", FeeApi.TokenDelete, "Delete an existing token"));
         registry.put(FeeApi.TokenMint, new TokenMint());

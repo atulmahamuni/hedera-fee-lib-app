@@ -46,6 +46,7 @@ public final class BaseFeeRegistry {
         fees.put(FeeApi.TokenCreate, 1.00000);
         fees.put(FeeApi.TokenDelete, 0.00100);
         fees.put(FeeApi.TokenUpdate, 0.00100);
+        fees.put(FeeApi.TokenUpdateNfts, 0.00100);
         fees.put(FeeApi.TokenMintFungible, 0.00100);
         fees.put(FeeApi.TokenMintNonFungible, 0.02000);
         fees.put(FeeApi.TokenBurn, 0.00100);
